@@ -1,0 +1,16 @@
+
+
+Using Armv8-A 
+
+
+registers:
+31 General purpose registers
+w0,w1,w2,... 64 bit
+x0,x1,x2,...
+
+
+
+
+
+
+

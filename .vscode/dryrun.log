@@ -1,0 +1,19 @@
+make: Entering directory `/Users/matt/Documents/GitHub/Compiler'
+mkdir -p obj
+cc -Iinclude -MMD -MP -Wall -g -c src/as_frontend.c -o obj/as_frontend.o
+cc -Iinclude -MMD -MP -Wall -g -c src/ast.c -o obj/ast.o
+cc -Iinclude -MMD -MP -Wall -g -c src/compiler.c -o obj/compiler.o
+cc -Iinclude -MMD -MP -Wall -g -c src/compiler_errors.c -o obj/compiler_errors.o
+cc -Iinclude -MMD -MP -Wall -g -c src/io.c -o obj/io.o
+cc -Iinclude -MMD -MP -Wall -g -c src/lexer.c -o obj/lexer.o
+cc -Iinclude -MMD -MP -Wall -g -c src/list.c -o obj/list.o
+cc -Iinclude -MMD -MP -Wall -g -c src/parser.c -o obj/parser.o
+cc -Iinclude -MMD -MP -Wall -g -c src/stack_frame.c -o obj/stack_frame.o
+cc -Iinclude -MMD -MP -Wall -g -c src/tac.c -o obj/tac.o
+cc -Iinclude -MMD -MP -Wall -g -c src/token.c -o obj/token.o
+cc -Iinclude -MMD -MP -Wall -g -c src/type.c -o obj/type.o
+cc -Iinclude -MMD -MP -Wall -g -c src/utils.c -o obj/utils.o
+cc -Iinclude -MMD -MP -Wall -g -c src/visitor.c -o obj/visitor.o
+cc obj/as_frontend.o obj/ast.o obj/compiler.o obj/compiler_errors.o obj/io.o obj/lexer.o obj/list.o obj/parser.o obj/stack_frame.o obj/tac.o obj/token.o obj/type.o obj/utils.o obj/visitor.o -o compiler
+make: Leaving directory `/Users/matt/Documents/GitHub/Compiler'
+ 
