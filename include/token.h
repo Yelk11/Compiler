@@ -1,7 +1,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-typedef struct Token_T
+typedef struct token_T
 {
     char *value;
     enum
@@ -29,13 +29,10 @@ typedef struct Token_T
         TOKEN_MUL,
         TOKEN_EOF,
     } type;
-} Token_T;
+
+} token_T;
 
 
-Token_T* init_token(char* value, int type);
-
-const char* token_type_to_str(int type);
-
-char* token_to_str(Token_T* token);
-
+token_T* init_token(char* value, int type);
+char* type_to_string(token_T* token);
 #endif

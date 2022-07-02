@@ -2,7 +2,7 @@ SRC_DIR := src
 OBJ_DIR := obj
 
 
-EXE := compiler
+EXE := main
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
