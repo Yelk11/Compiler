@@ -3,7 +3,7 @@
 
 typedef struct token_T
 {
-    char *value;
+    char *value; 
     enum
     {
         TOKEN_ID,
@@ -34,5 +34,5 @@ typedef struct token_T
 
 
 token_T* init_token(char* value, int type);
-char* type_to_string(token_T* token);
+char* type_to_string(int token);
 #endif

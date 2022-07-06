@@ -1,0 +1,8 @@
+make: Entering directory `/Users/matt/Documents/GitHub/Compiler'
+mkdir -p obj
+cc -Iinclude -MMD -MP -Wall -g -c src/lexer.c -o obj/lexer.o
+cc -Iinclude -MMD -MP -Wall -g -c src/main.c -o obj/main.o
+cc -Iinclude -MMD -MP -Wall -g -c src/token.c -o obj/token.o
+cc obj/lexer.o obj/main.o obj/token.o -o main
+make: Leaving directory `/Users/matt/Documents/GitHub/Compiler'
+ 

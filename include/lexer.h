@@ -6,18 +6,33 @@
 #include "token.h"
 
 typedef struct lexer_T{
-    char* str;
-    char c;
-    int length;
     FILE* fp;
-    struct token_T* token;
+    char c;
+    unsigned int i;
 }lexer_T;
 
-token_T* next(lexer_T* lexer);
+lexer_T* init_lexer(char* src);
 
-lexer_T* init_lexer(char* file_name);
-lexer_T* advance(lexer_T* lexer);
-lexer_T* skip_whitespace(lexer_T* lexer);
+token_T* lexer_next_token(lexer_T* lexer);
 
+char lexer_peek(lexer_T* lexer, int offset);
+
+void lexer_advance(lexer_T* lexer);
+
+token_T* lexer_advance_current(lexer_T* lexer, int type);
+
+token_T* lexer_advance_with(lexer_T* lexer, token_T* token);
+
+void lexer_skip_whitespace(lexer_T* lexer);
+
+void lexer_skip_comment(lexer_T* lexer);
+
+void lexer_skip_comment_block(lexer_T* lexer);
+
+token_T* lexer_parse_id(lexer_T* lexer);
+
+token_T* lexer_parse_number(lexer_T* lexer);
+
+token_T* lexer_parse_string(lexer_T* lexer);
 
 #endif

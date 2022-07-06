@@ -11,10 +11,10 @@ token_T *init_token(char *value, int type)
     return token;
 }
 
-char *type_to_string(token_T *token)
+char *type_to_string(int token)
 {
-    
-    switch (token->type)
+
+    switch (token)
     {
     case TOKEN_ID:
         return "TOKEN_ID";
@@ -32,7 +32,7 @@ char *type_to_string(token_T *token)
         return "TOKEN_LBRACKET";
     case TOKEN_RBRACKET:
         return "TOKEN_RBRACKET";
-    case TOKEN_COLON:   
+    case TOKEN_COLON:
         return "TOKEN_COLON";
     case TOKEN_COMMA:
         return "TOKEN_COMMA";
