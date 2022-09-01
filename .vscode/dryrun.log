@@ -1,8 +1,10 @@
-make: Entering directory `/Users/matt/Documents/GitHub/Compiler'
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/matt/sandbox/Compiler'
 mkdir -p obj
+cc -Iinclude -MMD -MP -Wall -g -c src/ast.c -o obj/ast.o
 cc -Iinclude -MMD -MP -Wall -g -c src/lexer.c -o obj/lexer.o
 cc -Iinclude -MMD -MP -Wall -g -c src/main.c -o obj/main.o
 cc -Iinclude -MMD -MP -Wall -g -c src/token.c -o obj/token.o
-cc obj/lexer.o obj/main.o obj/token.o -o main
-make: Leaving directory `/Users/matt/Documents/GitHub/Compiler'
+cc obj/ast.o obj/lexer.o obj/main.o obj/token.o -o main
+make: Leaving directory `/Users/matt/sandbox/Compiler'
  

@@ -115,7 +115,7 @@ token_T *lexer_advance_with(lexer_T *lexer, token_T *token)
 
 void lexer_skip_whitespace(lexer_T *lexer)
 {
-    while (lexer->c == 13 || lexer->c == 10 || lexer->c == ' ' || lexer->c == '\t')
+    while (lexer->c == 13 || lexer->c == 10 || lexer->c == ' ' || lexer->c == '\t' || lexer->c == '\n')
         lexer_advance(lexer);
 }
 

@@ -6,8 +6,9 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
 
-# Make data base, printed on Mon Jul  4 13:35:17 2022
+# Make data base, printed on Thu Sep  1 12:09:49 2022
 
 # Variables
 
@@ -16,15 +17,15 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # automatic
 ?F = $(notdir $?)
 # makefile (from `Makefile', line 7)
-OBJ := obj/lexer.o obj/main.o obj/token.o
+OBJ := obj/ast.o obj/lexer.o obj/main.o obj/token.o
 # makefile (from `Makefile', line 6)
-SRC := src/lexer.c src/main.c src/token.c
-# environment
-VSCODE_LOG_NATIVE = false
+SRC := src/ast.c src/lexer.c src/main.c src/token.c
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # makefile (from `Makefile', line 9)
 CPPFLAGS := -Iinclude -MMD -MP
+# environment
+PLATFORMIO_IDE = 2.5.2
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # makefile (from `Makefile', line 5)
@@ -32,7 +33,7 @@ EXE := main
 # automatic
 @F = $(notdir $@)
 # makefile
-CURDIR := /Users/matt/Documents/GitHub/Compiler
+CURDIR := /Users/matt/sandbox/Compiler
 # makefile
 SHELL = /bin/sh
 # environment
@@ -46,35 +47,29 @@ MAKEFILE_LIST :=  Makefile obj/lexer.d obj/main.d obj/token.d
 # makefile (from `Makefile', line 2)
 OBJ_DIR := obj
 # environment
-VSCODE_VERBOSE_LOGGING = true
-# environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/vm/q8gtcqz55dd1c3hk03q89nzw0000gn/T/vscode-ipc-06d9eaff-6d24-44e2-9afe-5c228cecdb34.sock
-# environment
 VSCODE_CWD = /
 # environment
-PATH = /opt/local/bin:/opt/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
+NO_PROXY = 127.0.0.1
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-VSCODE_LOG_STACK = false
+LaunchInstanceID = 14A5E749-E68F-491B-B147-03D49D73C13F
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.ayd32OKXWa/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.sVKmaNgjmL/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
-DISPLAY = /private/tmp/com.apple.launchd.WnM7cKeGWH/org.xquartz:0
+DISPLAY = /private/tmp/com.apple.launchd.u2UTVcoT7D/org.xquartz:0
 # environment
-VSCODE_PIPE_LOGGING = true
-# environment
-PWD = /Users/matt/Documents/GitHub/Compiler
+PWD = /Users/matt/sandbox/Compiler
 # environment
 HOMEBREW_CELLAR = /opt/homebrew/Cellar
 # environment
@@ -88,7 +83,7 @@ HOME = /Users/matt
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/matt/Library/Application Support/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+VSCODE_CODE_CACHE_PATH = /Users/matt/Library/Application Support/Code/CachedData/e4503b30fc78200f846c62cf8091b76ff5547662
 # environment
 LOGNAME = matt
 # environment
@@ -100,13 +95,17 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
-XPC_FLAGS = 0x0
+PLATFORMIO_PATH = /Users/matt/.platformio/python3/bin:/opt/local/bin:/opt/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
 # default
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
+PATH = /opt/local/bin:/opt/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS
+# environment
 SHLVL = 1
+# environment
+XPC_FLAGS = 0x0
 # default
 MAKE_VERSION := 3.81
 # environment
@@ -126,7 +125,9 @@ TMPDIR = /var/folders/vm/q8gtcqz55dd1c3hk03q89nzw0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/matt/Library/Application Support/Code/1.68.1-main.sock
+VSCODE_IPC_HOOK = /Users/matt/Library/Application Support/Code/1.70.2-main.sock
+# environment
+MallocNanoZone = 0
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -134,7 +135,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.52187705.52187711
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.57360702.57360708
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -154,9 +155,13 @@ SRC_DIR := src
 # automatic
 <F = $(notdir $<)
 # environment
+PLATFORMIO_CALLER = vscode
+# environment
 PAGER = less
 # environment
 LC_ALL = C
+# environment
+SECURITYSESSIONID = 186ae
 # automatic
 ^F = $(notdir $^)
 # default
@@ -168,9 +173,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 57371
+VSCODE_PID = 14871
 # variable set hash-table stats:
-# Load=79/1024=8%, Rehash=0, Collisions=4/126=3%
+# Load=81/1024=8%, Rehash=0, Collisions=6/128=5%
 
 # Pattern-specific Variable Values
 
@@ -178,10 +183,10 @@ VSCODE_PID = 57371
 
 # Directories
 
-# . (device 16777232, inode 51710030): 11 files, no impossibilities.
-# src (device 16777232, inode 52249368): 5 files, no impossibilities.
+# . (device 16777232, inode 56672375): 14 files, no impossibilities.
+# src (device 16777232, inode 56672462): 6 files, no impossibilities.
 
-# 16 files, no impossibilities in 2 directories.
+# 20 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
@@ -198,10 +203,11 @@ obj/%.o: src/%.c | obj
 obj/lexer.d:
 #  A default, MAKEFILES, or -include/sinclude makefile.
 #  Implicit rule search has been done.
-#  Last modified 2022-07-03 15:37:08
+#  Last modified 2022-08-11 15:54:01
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
+ 
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 all: main
@@ -219,6 +225,34 @@ all: main
 #  Modification time never checked.
 #  File has not been updated.
 
+obj/ast.o: src/ast.c | obj
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `ast'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := obj/ast.o
+# automatic
+# % := 
+# automatic
+# * := ast
+# automatic
+# + := src/ast.c
+# automatic
+# | := obj
+# automatic
+# < := src/ast.c
+# automatic
+# ^ := src/ast.c
+# automatic
+# ? := src/ast.c
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/15=7%
+#  commands to execute (from `Makefile', line 21):
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	
+
 obj/main.o: src/main.c include/lexer.h include/token.h
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -233,45 +267,31 @@ obj/main.o: src/main.c include/lexer.h include/token.h
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-01 19:58:50
+#  Last modified 2022-08-11 15:46:04
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-obj/lexer.o: src/lexer.c include/lexer.h include/token.h | obj
-#  Implicit rule search has been done.
-#  Implicit/static pattern stem: `lexer'
-#  Last modified 2022-07-03 15:37:08
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := obj/lexer.o
-# automatic
-# % := 
-# automatic
-# * := lexer
-# automatic
-# + := src/lexer.c src/lexer.c include/lexer.h include/token.h
-# automatic
-# | := obj
-# automatic
-# < := src/lexer.c
-# automatic
-# ^ := src/lexer.c include/lexer.h include/token.h
-# automatic
-# ? := src/lexer.c
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/15=7%
-#  commands to execute (from `Makefile', line 21):
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-	
+obj/lexer.o: src/lexer.c include/lexer.h include/token.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 obj/token.d:
 #  A default, MAKEFILES, or -include/sinclude makefile.
 #  Implicit rule search has been done.
-#  Last modified 2022-07-03 12:41:40
+#  Last modified 2022-08-11 15:50:24
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+src/ast.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-09-01 08:37:36
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -285,7 +305,7 @@ src/main.c:
 
 obj:
 #  Implicit rule search has not been done.
-#  Last modified 2022-07-03 15:37:08
+#  Last modified 2022-08-11 15:54:01
 #  File has been updated.
 #  Successfully updated.
 #  commands to execute (from `Makefile', line 24):
@@ -293,25 +313,18 @@ obj:
 	
 
 include/lexer.h:
-#  Implicit rule search has been done.
-#  Last modified 2022-07-03 15:36:49
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 src/lexer.c:
-#  Implicit rule search has been done.
-#  Last modified 2022-07-03 15:51:45
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 .DEFAULT:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -330,9 +343,9 @@ clean:
 	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
 	
 
-main: obj/lexer.o obj/main.o obj/token.o
+main: obj/ast.o obj/lexer.o obj/main.o obj/token.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-07-03 12:44:37
+#  Last modified 2022-08-11 15:54:02
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -342,12 +355,9 @@ main: obj/lexer.o obj/main.o obj/token.o
 	
 
 include/token.h:
-#  Implicit rule search has been done.
-#  Last modified 2022-07-01 19:58:50
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 src/token.c:
@@ -356,28 +366,38 @@ src/token.c:
 #  File has not been updated.
 
 # Not a target:
+obj/ast.d:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Failed to be updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
 obj/main.d:
 #  A default, MAKEFILES, or -include/sinclude makefile.
 #  Implicit rule search has been done.
-#  Last modified 2022-07-03 15:37:08
+#  Last modified 2022-08-11 15:50:24
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # files hash-table stats:
-# Load=19/1024=2%, Rehash=0, Collisions=0/56=0%
+# Load=22/1024=2%, Rehash=0, Collisions=0/62=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
 
 # No general (`VPATH' variable) search path.
 
-# # of strings in strcache: 4
+# # of strings in strcache: 5
 # # of strcache buffers: 1
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
-# strcache free: total = 4052 / max = 4052 / min = 4052 / avg = 4052
+# strcache free: total = 4042 / max = 4042 / min = 4042 / avg = 4042
 
-# Finished Make data base on Mon Jul  4 13:35:17 2022
+# Finished Make data base on Thu Sep  1 12:09:49 2022
 
  
