@@ -72,6 +72,8 @@ token_T *lexer_next_token(lexer_T *lexer)
             return lexer_parse_string(lexer);
         case '\0':
             break; // breaks to EOF token
+        case '\xff':
+            break;
         default:
             printf("[Lexer]: Unexpected character `%c` (%d)\n", lexer->c, (int)lexer->c);
             exit(1);
@@ -130,9 +132,11 @@ void lexer_skip_comment(lexer_T *lexer) //TODO finish /*
             {
                 lexer_advance(lexer);
             }
+            lexer_advance(lexer); // eat the \n
         }
         else if (lexer->c == '*')
         {
+            lexer_advance(lexer);
             lexer_skip_comment_block(lexer);
         }
     }
@@ -140,7 +144,13 @@ void lexer_skip_comment(lexer_T *lexer) //TODO finish /*
 
 void lexer_skip_comment_block(lexer_T* lexer)
 {
-    printf("Hello");
+    while(lexer->c != '*'){
+        lexer_advance(lexer);
+    }
+    lexer_advance(lexer);
+    
+    lexer_advance(lexer);
+    lexer_advance(lexer);
 }
 
 token_T *lexer_parse_id(lexer_T *lexer)
