@@ -147,10 +147,9 @@ void lexer_skip_comment(lexer_T *lexer) //TODO finish /*
 void lexer_skip_comment_block(lexer_T* lexer)
 {
     lexer_advance(lexer);
-    while(lexer->c != '*'){
+    while(lexer->c != '/' && lexer_peek(lexer, 1) != '/'){
         lexer_advance(lexer);
     }
-    lexer_advance(lexer);
 }
 
 token_T *lexer_parse_id(lexer_T *lexer)
@@ -204,8 +203,8 @@ token_T *lexer_parse_string(lexer_T *lexer)
 
 token_T *lexer_parse_char(lexer_T *lexer){
     char *value = calloc(1, sizeof(char));
-    lexer_advance(lexer); // eat '
+    lexer_advance(lexer);
     value = &lexer->c;
-    lexer_advance(lexer); // eat '
+    lexer_advance(lexer);
     return init_token(value, TOKEN_CHAR);
 }
