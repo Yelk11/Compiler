@@ -28,6 +28,7 @@ typedef struct token_T
         TOKEN_DIV,
         TOKEN_MUL,
         TOKEN_EOF,
+        TOKEN_CHAR,
     } type;
 
 } token_T;

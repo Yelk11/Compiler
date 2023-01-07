@@ -70,6 +70,8 @@ token_T *lexer_next_token(lexer_T *lexer)
             return lexer_advance_current(lexer, TOKEN_MUL);
         case '"':
             return lexer_parse_string(lexer);
+        case '\'':
+            return lexer_parse_char(lexer);
         case '\0':
             break; // breaks to EOF token
         case '\xff':
@@ -144,12 +146,10 @@ void lexer_skip_comment(lexer_T *lexer) //TODO finish /*
 
 void lexer_skip_comment_block(lexer_T* lexer)
 {
+    lexer_advance(lexer);
     while(lexer->c != '*'){
         lexer_advance(lexer);
     }
-    lexer_advance(lexer);
-    
-    lexer_advance(lexer);
     lexer_advance(lexer);
 }
 
@@ -199,4 +199,13 @@ token_T *lexer_parse_string(lexer_T *lexer)
     lexer_advance(lexer);
 
     return init_token(value, TOKEN_STRING);
+}
+
+
+token_T *lexer_parse_char(lexer_T *lexer){
+    char *value = calloc(1, sizeof(char));
+    lexer_advance(lexer); // eat '
+    value = &lexer->c;
+    lexer_advance(lexer); // eat '
+    return init_token(value, TOKEN_CHAR);
 }
