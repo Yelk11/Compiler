@@ -68,7 +68,15 @@ postfix_expression
 
 expr *make_postfix_expression(lexer_T *lexer)
 {
-    return NULL;
+    token_T *token = lexer_next_token(lexer);
+
+    switch (token->type)
+    {
+    
+    default:
+        printf("%s not supported", token->value);
+        return NULL;
+    }
 }
 
 /*
@@ -79,9 +87,17 @@ argument_expression_list
 
 */
 
-expr *make_argument_experssion_list(lexer_T *lexer)
+expr *make_argument_expression_list(lexer_T *lexer)
 {
-    return NULL;
+    token_T *token = lexer_next_token(lexer);
+
+    switch (token->type)
+    {
+    
+    default:
+        printf("%s not supported", token->value);
+        return NULL;
+    }
 }
 
 /*
@@ -155,7 +171,7 @@ shift_expression
     ;
 
 */
-expr* make_shift_expression(lexer_T* lexer)
+expr *make_shift_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -169,7 +185,7 @@ relational_expression
     | relational_expression GE_OP shift_expression
     ;
 */
-expr* make_relational_expression(lexer_T* lexer)
+expr *make_relational_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -181,7 +197,7 @@ equality_expression
     ;
 
 */
-expr* make_equality_expression(lexer_T* lexer)
+expr *make_equality_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -193,31 +209,30 @@ and_expression
     ;
 
 */
-expr* make_and_expression(lexer_T* lexer)
+expr *make_and_expression(lexer_T *lexer)
 {
     return NULL;
 }
-/*
 
+/*
 exclusive_or_expression
     : and_expression
     | exclusive_or_expression '^' and_expression
     ;
 */
-expr* make_exclusive_or_expression(lexer_T* lexer) // TODO
+expr *make_exclusive_or_expression(lexer_T *lexer)
 {
     return NULL;
 }
+
 /*
-
-
 inclusive_or_expression
     : exclusive_or_expression
     | inclusive_or_expression '|' exclusive_or_expression
     ;
 
 */
-expr* make_inclusive_or_expression(lexer_T* lexer)
+expr *make_inclusive_or_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -230,7 +245,7 @@ logical_and_expression
 
 
 */
-expr* make_logical_and_expression(lexer_T* lexer)
+expr *make_logical_and_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -240,7 +255,7 @@ logical_or_expression
     | logical_or_expression OR_OP logical_and_expression
     ;
 */
-expr* make_logical_or_expression(lexer_T* lexer)
+expr *make_logical_or_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -251,7 +266,7 @@ conditional_expression
     ;
 
 */
-expr* make_conditional_expression(lexer_T* lexer)
+expr *make_conditional_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -263,7 +278,7 @@ assignment_expression
     ;
 
 */
-expr* make_assignment_expression(lexer_T* lexer)
+expr *make_assignment_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -284,7 +299,7 @@ assignment_operator
     ;
 
 */
-expr* make_assignment_operator(lexer_T* lexer)
+expr *make_assignment_operator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -308,7 +323,7 @@ constant_expression
     ;
 
 */
-expr* make_constant_expression(lexer_T* lexer)
+expr *make_constant_expression(lexer_T *lexer)
 {
     return NULL;
 }
@@ -320,7 +335,7 @@ declaration
     ;
 
 */
-decl* make_declaration(lexer_T* lexer)
+decl *make_declaration(lexer_T *lexer)
 {
     return NULL;
 }
@@ -336,7 +351,7 @@ declaration_specifiers
     ;
 
 */
-decl* make_declaration_specifiers(lexer_T* lexer)
+decl *make_declaration_specifiers(lexer_T *lexer)
 {
     return NULL;
 }
@@ -348,7 +363,7 @@ init_declarator_list
     ;
 
 */
-decl* make_init_declarator_list(lexer_T* lexer)
+decl *make_init_declarator_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -359,7 +374,7 @@ init_declarator
     | declarator '=' initializer
     ;
 */
-decl* make_init_declarator(lexer_T* lexer)
+decl *make_init_declarator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -372,7 +387,7 @@ storage_class_specifier
     | REGISTER
     ;
 */
-decl* make_storage_class_specifier(lexer_T* lexer)
+decl *make_storage_class_specifier(lexer_T *lexer)
 {
     return NULL;
 }
@@ -392,7 +407,7 @@ type_specifier
     | TYPE_NAME
     ;
 */
-decl* make_type_specifier(lexer_T* lexer)
+decl *make_type_specifier(lexer_T *lexer)
 {
     return NULL;
 }
@@ -403,7 +418,7 @@ struct_or_union_specifier
     | struct_or_union IDENTIFIER
     ;
 */
-decl* make_struct_or_union_specifier(lexer_T* lexer)
+decl *make_struct_or_union_specifier(lexer_T *lexer)
 {
     return NULL;
 }
@@ -413,7 +428,7 @@ struct_or_union
     | UNION
     ;
 */
-decl* make_struct_or_union(lexer_T* lexer)
+decl *make_struct_or_union(lexer_T *lexer)
 {
     return NULL;
 }
@@ -423,7 +438,7 @@ struct_declaration_list
     | struct_declaration_list struct_declaration
     ;
 */
-decl* make_struct_declaration_list(lexer_T* lexer)
+decl *make_struct_declaration_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -432,7 +447,7 @@ struct_declaration
     : specifier_qualifier_list struct_declarator_list ';'
     ;
 */
-decl* make_struct_declaration(lexer_T* lexer)
+decl *make_struct_declaration(lexer_T *lexer)
 {
     return NULL;
 }
@@ -444,7 +459,7 @@ specifier_qualifier_list
     | type_qualifier
     ;
 */
-decl* make_specifier_qualifier_list(lexer_T* lexer)
+decl *make_specifier_qualifier_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -454,7 +469,7 @@ struct_declarator_list
     | struct_declarator_list ',' struct_declarator
     ;
 */
-decl* make_struct_declarator_list(lexer_T* lexer)
+decl *make_struct_declarator_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -465,7 +480,7 @@ struct_declarator
     | declarator ':' constant_expression
     ;
 */
-decl* make_struct_declarator(lexer_T* lexer)
+decl *make_struct_declarator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -476,7 +491,7 @@ enum_specifier
     | ENUM IDENTIFIER
     ;
 */
-decl* make_enum_specifier(lexer_T* lexer)
+decl *make_enum_specifier(lexer_T *lexer)
 {
     return NULL;
 }
@@ -486,7 +501,7 @@ enumerator_list
     | enumerator_list ',' enumerator
     ;
 */
-decl* make_enumerator_list(lexer_T* lexer)
+decl *make_enumerator_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -496,7 +511,7 @@ enumerator
     | IDENTIFIER '=' constant_expression
     ;
 */
-decl* make_enumerator(lexer_T* lexer)
+decl *make_enumerator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -506,7 +521,7 @@ type_qualifier
     | VOLATILE
     ;
 */
-decl* make_type_qualifier(lexer_T* lexer)
+decl *make_type_qualifier(lexer_T *lexer)
 {
     return NULL;
 }
@@ -516,7 +531,7 @@ declarator
     | direct_declarator
     ;
 */
-decl* make_declarator(lexer_T* lexer)
+decl *make_declarator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -531,7 +546,7 @@ direct_declarator
     | direct_declarator '(' ')'
     ;
 */
-decl* make_direct_declarator(lexer_T* lexer)
+decl *make_direct_declarator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -543,7 +558,7 @@ pointer
     | '*' type_qualifier_list pointer
     ;
 */
-decl* make_pointer(lexer_T* lexer)
+decl *make_pointer(lexer_T *lexer)
 {
     return NULL;
 }
@@ -554,7 +569,7 @@ type_qualifier_list
     ;
 
 */
-decl* make_type_qualifier_list(lexer_T* lexer)
+decl *make_type_qualifier_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -564,7 +579,7 @@ parameter_type_list
     | parameter_list ',' ELLIPSIS
     ;
 */
-decl* make_parameter_type_list(lexer_T* lexer)
+decl *make_parameter_type_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -574,7 +589,7 @@ parameter_list
     | parameter_list ',' parameter_declaration
     ;
 */
-decl* make_parameter_list(lexer_T* lexer)
+decl *make_parameter_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -585,7 +600,7 @@ parameter_declaration
     | declaration_specifiers
     ;
 */
-decl* make_parameter_declaration(lexer_T* lexer)
+decl *make_parameter_declaration(lexer_T *lexer)
 {
     return NULL;
 }
@@ -595,7 +610,7 @@ identifier_list
     | identifier_list ',' IDENTIFIER
     ;
 */
-decl* make_identifier_list(lexer_T* lexer)
+decl *make_identifier_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -605,7 +620,7 @@ type_name
     | specifier_qualifier_list abstract_declarator
     ;
 */
-decl* make_type_name(lexer_T* lexer)
+decl *make_type_name(lexer_T *lexer)
 {
     return NULL;
 }
@@ -616,7 +631,7 @@ abstract_declarator
     | pointer direct_abstract_declarator
     ;
 */
-decl* make_abstract_declarator(lexer_T* lexer)
+decl *make_abstract_declarator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -633,7 +648,7 @@ direct_abstract_declarator
     | direct_abstract_declarator '(' parameter_type_list ')'
     ;
 */
-decl* make_direct_abstract_declarator(lexer_T* lexer)
+decl *make_direct_abstract_declarator(lexer_T *lexer)
 {
     return NULL;
 }
@@ -644,7 +659,7 @@ initializer
     | '{' initializer_list ',' '}'
     ;
 */
-decl* make_initializer(lexer_T* lexer)
+decl *make_initializer(lexer_T *lexer)
 {
     return NULL;
 }
@@ -654,7 +669,7 @@ initializer_list
     | initializer_list ',' initializer
     ;
 */
-decl* make_initializer_list(lexer_T* lexer)
+decl *make_initializer_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -668,7 +683,7 @@ statement
     | jump_statement
     ;
 */
-stmt* make_statement(lexer_T* lexer)
+stmt *make_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -679,7 +694,7 @@ labeled_statement
     | DEFAULT ':' statement
     ;
 */
-stmt* make_labeled_statement(lexer_T* lexer)
+stmt *make_labeled_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -691,7 +706,7 @@ compound_statement
     | '{' declaration_list statement_list '}'
     ;
 */
-stmt* make_compound_statement(lexer_T* lexer)
+stmt *make_compound_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -701,7 +716,7 @@ declaration_list
     | declaration_list declaration
     ;
 */
-decl* make_declaration_list(lexer_T* lexer)
+decl *make_declaration_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -711,7 +726,7 @@ statement_list
     | statement_list statement
     ;
 */
-stmt* make_statement_list(lexer_T* lexer)
+stmt *make_statement_list(lexer_T *lexer)
 {
     return NULL;
 }
@@ -721,7 +736,7 @@ expression_statement
     | expression ';'
     ;
 */
-stmt* make_expression_statement(lexer_T* lexer)
+stmt *make_expression_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -732,7 +747,7 @@ selection_statement
     | SWITCH '(' expression ')' statement
     ;
 */
-decl* make_selection_statement(lexer_T* lexer)
+decl *make_selection_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -744,7 +759,7 @@ iteration_statement
     | FOR '(' expression_statement expression_statement expression ')' statement
     ;
 */
-stmt* make_iteration_statement(lexer_T* lexer)
+stmt *make_iteration_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -757,7 +772,7 @@ jump_statement
     | RETURN expression ';'
     ;
 */
-stmt* make_jump_statement(lexer_T* lexer)
+stmt *make_jump_statement(lexer_T *lexer)
 {
     return NULL;
 }
@@ -767,7 +782,7 @@ translation_unit
     | translation_unit external_declaration
     ;
 */
-decl* make_translation_unit(lexer_T* lexer)
+decl *make_translation_unit(lexer_T *lexer)
 {
     return NULL;
 }
@@ -777,7 +792,7 @@ external_declaration
     | declaration
     ;
 */
-decl* make_external_declaration(lexer_T* lexer)
+decl *make_external_declaration(lexer_T *lexer)
 {
     return NULL;
 }
@@ -789,7 +804,7 @@ function_definition
     | declarator compound_statement
     ;
 */
-decl* make_function_definition(lexer_T* lexer)
+decl *make_function_definition(lexer_T *lexer)
 {
     return NULL;
 }

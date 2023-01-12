@@ -3,4 +3,8 @@ int main(){
     int x = 0;
     int y = 9;
     x = x + y;
+
+    if(x > 0){
+        x = 9;
+    }
 }

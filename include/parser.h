@@ -26,7 +26,7 @@ expr *make_primary_expression(lexer_T *lexer);
 
 expr *make_postfix_expression(lexer_T *lexer);
 
-expr *make_argument_experssion_list(lexer_T *lexer);
+expr *make_argument_expression_list(lexer_T *lexer);
 
 expr *make_unary_expression(lexer_T *lexer);
 
