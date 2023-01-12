@@ -2,49 +2,46 @@
 #include "ast.h"
 #include <stdlib.h>
 
-decl *decl_create(char *name, struct type *type, struct expr *value, struct stmt *code, struct decl *next)
+
+// declaration
+decl *init_decl(char *name, struct type *type,
+                    struct expr *value, struct stmt *code, struct decl *next)
 {
-    struct decl *d = malloc(sizeof(*d));
-    d->name = name;
-    d->type = type;
-    d->value = value;
-    d->code = code;
-    d->next = next;
-    return d;
+    decl* node = calloc(1, sizeof(struct decl));
+    node->name = name;
+    node->type = type;
+    node->value = value;
+    node->code = code;
+    node->next = next;
+    return node;
 }
 
-stmt *stmt_create(enum stmt_t kind,
-                  struct decl *decl, struct expr *init_expr,
-                  struct expr *expr, struct expr *next_expr,
-                  struct stmt *body, struct stmt *else_body,
-                  struct stmt *next)
+// statement
+stmt *init_stmt(enum stmt_t kind, struct decl *decl, struct expr *init_expr, struct expr *expr,
+                    struct expr *next_expr, struct stmt *body, struct stmt *else_body, struct stmt *next)
 {
-    struct stmt *s = malloc(sizeof(*s));
-    s->kind = kind;
-    s->decl = decl;
-    s->init_expr = init_expr;
-    s->expr = expr;
-    s->next_expr = next_expr;
-    s->body = body;
-    s->else_body = else_body;
-    s->next = next;
+    stmt* node = calloc(1, sizeof(struct stmt));
+    node->kind = kind;
+    node->decl = decl;
+    node->init_expr = init_expr;
+    node->expr = expr;
+    node->next_expr = next_expr;
+    node->body = body;
+    node->else_body = else_body;
+    node->next = next;
+    return node;
 }
 
-struct expr *expr_create(enum expr_t kind,
-                         struct expr *L,
-                         struct expr *R)
+// expression
+expr *init_expr(enum expr_t kind, struct expr *left, struct expr *right, const char *name,
+                    int integer_value, const char *string_literal)
 {
-    struct expr* e = malloc(sizeof(*e));
-    e->expr_t = kind;
-    e->left = L;
-    e->right = R;
+    expr* node = calloc(1, sizeof(struct expr));
+    node->kind = kind;
+    node->left = left;
+    node->right = right;
+    node->name = name;
+    node->integer_value = integer_value;
+    node->string_literal = string_literal;
+    return node;
 }
-
-expr *expr_create_name(const char *name){
-    
-}
-
-expr *expr_create_integer_literal(int i);
-expr *expr_create_boolean_literal(int b);
-expr *expr_create_char_literal(char c);
-expr *expr_create_string_literal(const char *str);
