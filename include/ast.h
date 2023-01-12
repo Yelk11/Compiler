@@ -2,6 +2,7 @@
 #define AST_H
 
 #include "token.h"
+#include "type.h"
 
 typedef struct decl
 {
