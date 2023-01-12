@@ -21,10 +21,10 @@ parser_T* init_parser(lexer_T* lexer);
 
 token_T* parser_eat(parser_T* parser);
 
-ast_T* parse(lexer_T* lexer);
+// ast_T* parse(lexer_T* lexer);
 
-ast_T* make_compound();
+// ast_T* make_compound();
 
-ast_T* make_binary();
+// ast_T* make_binary();
 
 #endif

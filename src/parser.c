@@ -11,16 +11,9 @@ parser_T *init_parser(lexer_T *lexer)
     return parser;
 }
 
-token_T *parser_eat(parser_T *parser)
+token_T* parser_eat(parser_T *parser)
 {
     parser->token = lexer_next_token(parser->lexer);
 
     return parser->token;
-}
-ast_T* parse(lexer_T* lexer){
-    return make_compound(lexer);
-}
-
-ast_T* make_compound(lexer_T* lexer){
-    return NULL;
 }
