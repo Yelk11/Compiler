@@ -1,8 +1,6 @@
 int main(){
+    char x = '9';
     int x = 0;
-    /*
-    this is a multi line comment
-    so many lines
-    */
-   char x = '9';
+    int y = 9;
+    x = x + y;
 }

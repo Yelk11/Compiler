@@ -60,6 +60,8 @@ char *type_to_string(int token)
         return "TOKEN_MUL";
     case TOKEN_EOF:
         return "TOKEN_EOF";
+    case TOKEN_CHAR:
+        return "TOKEN_CHAR";
     default:
         return "TOKEN_NOT_VALID";
     }

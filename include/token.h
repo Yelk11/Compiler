@@ -36,4 +36,5 @@ typedef struct token_T
 
 token_T* init_token(char* value, int type);
 char* type_to_string(int token);
+
 #endif

@@ -21,6 +21,7 @@ token_T *lexer_next_token(lexer_T *lexer)
 {
     while (lexer->c != '\0')
     {
+        
         lexer_skip_whitespace(lexer);
         lexer_skip_comment(lexer);
 
@@ -123,7 +124,7 @@ void lexer_skip_whitespace(lexer_T *lexer)
         lexer_advance(lexer);
 }
 
-void lexer_skip_comment(lexer_T *lexer) //TODO finish /*
+void lexer_skip_comment(lexer_T *lexer)
 {
     if (lexer->c == '/')
     {
@@ -134,22 +135,18 @@ void lexer_skip_comment(lexer_T *lexer) //TODO finish /*
             {
                 lexer_advance(lexer);
             }
-            lexer_advance(lexer); // eat the \n
+            lexer_advance(lexer);
         }
         else if (lexer->c == '*')
         {
             lexer_advance(lexer);
-            lexer_skip_comment_block(lexer);
+            while(lexer->c != '*' && lexer_peek(lexer, 1) != '/'){
+                lexer_advance(lexer);
+            }
+            lexer_advance(lexer);
         }
     }
-}
-
-void lexer_skip_comment_block(lexer_T* lexer)
-{
-    lexer_advance(lexer);
-    while(lexer->c != '/' && lexer_peek(lexer, 1) != '/'){
-        lexer_advance(lexer);
-    }
+    lexer_skip_whitespace(lexer);
 }
 
 token_T *lexer_parse_id(lexer_T *lexer)
@@ -202,9 +199,9 @@ token_T *lexer_parse_string(lexer_T *lexer)
 
 
 token_T *lexer_parse_char(lexer_T *lexer){
-    char *value = calloc(1, sizeof(char));
+    char* value = calloc(1, sizeof(char));
     lexer_advance(lexer);
-    value = &lexer->c;
+    *value = lexer->c;
     lexer_advance(lexer);
     return init_token(value, TOKEN_CHAR);
 }
