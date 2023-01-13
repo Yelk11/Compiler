@@ -3,7 +3,35 @@
 
 #include "token.h"
 
+// start new node
+typedef enum node_type{
+    OPERATOR_NODE,
+    DECLARATION_NODE,
+    EXPRESSION_NODE
+} node_type;
 
+typedef struct node node;
+
+typedef struct pair_value{
+    node* right;
+    node* left;
+}pair_value;
+
+typedef char* string_constant;
+
+
+// Union only allows for one of the variables to be populated
+typedef union node_value{
+    pair_value pair;
+    string_constant str;
+}node_value;
+
+typedef struct node {
+    node_type type;
+    node_value value;
+}node;
+
+// end new node
 
 typedef enum {
     TYPE_VOID,

@@ -72,7 +72,11 @@ expr *make_postfix_expression(lexer_T *lexer)
 
     switch (token->type)
     {
-    
+    case TOKEN_ID:
+    case TOKEN_LBRACKET:
+        return make_expression(lexer);
+    case TOKEN_LPAREN:
+
     default:
         printf("%s not supported", token->value);
         return NULL;
