@@ -6,10 +6,10 @@ I intend to keep this version as close to the current C Standard grammar as poss
 Jutta Degener, 1995
 
 
-D			[0-9]
-L			[a-zA-Z_]
-H			[a-fA-F0-9]
-E			[Ee][+-]?{D}+
+D(igit)			[0-9]
+L(etter)			[a-zA-Z_]
+H(exidecimal)			[a-fA-F0-9]
+E			[Ee][+-]?{D}+ scientific notation ie. 8e+900
 FS			(f|F|l|L)
 IS			(u|U|l|L)*
 

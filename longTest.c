@@ -1,18 +1,4 @@
-// Copyright 2012 Rui Ueyama. Released under the MIT license.
 
-/*
- * This implements Dave Prosser's C Preprocessing algorithm, described
- * in this document: https://github.com/rui314/8cc/wiki/cpp.algo.pdf
- */
-
-#include <ctype.h>
-#include <libgen.h>
-#include <locale.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#include "8cc.h"
 
 static Map *macros = &EMPTY_MAP;
 static Map *once = &EMPTY_MAP;

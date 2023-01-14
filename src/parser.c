@@ -41,11 +41,11 @@ expr *make_primary_expression(lexer_T *lexer)
 
     switch (token->type)
     {
-    case TOKEN_ID:
+    case IDENTIFIER:
         return init_expr(EXPR_NAME, NULL, NULL, type_to_string(token->type), 0, token->value);
-    case TOKEN_STRING:
+    case STRING_LITERAL:
         return init_expr(EXPR_STRING_LITERAL, NULL, NULL, type_to_string(token->type), 0, token->value);
-    case TOKEN_LPAREN:
+    case L_PARENTHESIS:
         return make_expression(lexer);
     default:
         printf("%s not supported", token->value);
@@ -72,10 +72,10 @@ expr *make_postfix_expression(lexer_T *lexer)
 
     switch (token->type)
     {
-    case TOKEN_ID:
-    case TOKEN_LBRACKET:
+    case IDENTIFIER:
+    case L_BRACKET:
         return make_expression(lexer);
-    case TOKEN_LPAREN:
+    case L_PARENTHESIS:
 
     default:
         printf("%s not supported", token->value);
