@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <errno.h>
-
+#include <unistd.h>
 
 int is_next_word(lexer_T *lexer, char *str);
 
@@ -24,6 +24,7 @@ lexer_T *init_lexer(char *file_name)
 token_T *lexer_next_token(lexer_T *lexer)
 {
     lexer_skip_whitespace(lexer);
+    lexer_skip_comment(lexer);
     while (lexer->c != '\0')
     {
 
@@ -119,6 +120,17 @@ token_T *lexer_next_token(lexer_T *lexer)
         lexer_advance(lexer);
     }
     return init_token(0, END_OF_FILE);
+}
+
+token_T* lexer_peek_next_token(lexer_T* lexer, int words){
+    lexer_T temp_lexer;
+
+    temp_lexer = *lexer;
+    temp_lexer.fp = fdopen (dup (fileno (lexer->fp)), "r");
+    // for(int i = 0; i < (words); i++){
+    //     lexer_next_token(&lexer);
+    // }
+    return lexer_next_token(&temp_lexer);
 }
 
 int is_next_word(lexer_T *lexer, char *str)

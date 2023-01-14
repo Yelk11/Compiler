@@ -73,6 +73,7 @@ expr *make_postfix_expression(lexer_T *lexer)
     switch (token->type)
     {
     case IDENTIFIER:
+    
     case L_BRACKET:
         return make_expression(lexer);
     case L_PARENTHESIS:

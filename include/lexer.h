@@ -16,6 +16,8 @@ token_T* lexer_next_token(lexer_T* lexer);
 
 char lexer_peek(lexer_T* lexer, int offset);
 
+token_T* lexer_peek_next_token(lexer_T* lexer, int words);
+
 void lexer_advance(lexer_T* lexer);
 
 token_T* lexer_advance_current(lexer_T* lexer, int type);
