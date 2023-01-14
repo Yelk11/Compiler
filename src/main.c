@@ -1,30 +1,57 @@
 #include "lexer.h"
 #include "token.h"
-
-int main(int argc, char* argv[]){
-    lexer_T* lexer;
-    if(argc > 1){
-        lexer = init_lexer(argv[1]);
-    }else{
-        lexer = init_lexer("test.c");
+#include <stdlib.h>
+int main(int argc, char *argv[])
+{
+    lexer_T *lexer;
+    char *file_name;
+    if (argc > 1)
+    {
+        file_name = argv[1];
+    }
+    else
+    {
+        file_name = "test.c";
     }
     
+    
+
+    FILE *fp;
+    long lSize;
+    char *buffer;
+
+    fp = fopen(file_name, "rb");
+    if (!fp)
+        perror("blah.txt"), exit(1);
+
+    fseek(fp, 0L, SEEK_END);
+    lSize = ftell(fp);
+    rewind(fp);
+
+    /* allocate memory for entire content */
+    buffer = calloc(1, lSize + 1);
+    if (!buffer)
+        fclose(fp), fputs("memory alloc fails", stderr), exit(1);
+
+    /* copy the file into the buffer */
+    if (1 != fread(buffer, lSize, 1, fp))
+        fclose(fp), free(buffer), fputs("entire read fails", stderr), exit(1);
+    fclose(fp);
+    /* do your work here, buffer is a string contains the whole text */
+
+    
+    lexer = init_lexer(buffer);
 
 
-    for(int i = 0; i < 10; i++){
-        printf("next word %s\n", lexer_peek_next_token(lexer, 1)->value);
+    token_T* token;
+
+    while(1){
         
+        token = lexer_next_token(lexer);
+        printf("%s : %s\n",type_to_string(token->type), token->value);
+        if (token->type == END_OF_FILE){break;}
     }
 
-
-
-    // token_T* token;
-    // token = lexer_next_token(lexer);
-    // printf("%s : %s\n",type_to_string(token->type), token->value);
-
-    // while(lexer->c != '\xFF'){
-    //     token = lexer_next_token(lexer);
-    //     printf("%s : %s\n",type_to_string(token->type), token->value);
-    // }
+    free(buffer);
     return 0;
 }

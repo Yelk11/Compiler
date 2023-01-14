@@ -10,7 +10,7 @@ D(igit)			[0-9]
 L(etter)			[a-zA-Z_]
 H(exidecimal)			[a-fA-F0-9]
 E			[Ee][+-]?{D}+ scientific notation ie. 8e+900
-FS			(f|F|l|L)
+FS			(f|F|l|L) floating suffix 
 IS			(u|U|l|L)*
 
 %{

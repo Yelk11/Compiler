@@ -8,16 +8,12 @@
 
 int is_next_word(lexer_T *lexer, char *str);
 
-
-lexer_T *init_lexer(char *file_name)
+lexer_T *init_lexer(char *src)
 {
-    FILE *fp = fopen(file_name, "r");
-    if (!fp)
-        printf("Cannot open %s: %s", file_name, strerror(errno));
     lexer_T *lexer = calloc(1, sizeof(struct lexer_T));
-    lexer->fp = fp;
+    lexer->src = src;
     lexer->i = 0;
-    lexer->c = fgetc(lexer->fp);
+    lexer->c = lexer->src[lexer->i];
     return lexer;
 }
 
@@ -25,7 +21,8 @@ token_T *lexer_next_token(lexer_T *lexer)
 {
     lexer_skip_whitespace(lexer);
     lexer_skip_comment(lexer);
-    while (lexer->c != '\0')
+
+    while (lexer->i <= strlen(lexer->src))
     {
 
         if (isalpha(lexer->c))
@@ -38,83 +35,223 @@ token_T *lexer_next_token(lexer_T *lexer)
         case '"':
             return lexer_parse_string(lexer);
         case '.':
-            if(is_next_word(lexer, "...")){return lexer_advance_current(lexer, ELLIPSIS);}
-            if(is_next_word(lexer, ".")){return lexer_advance_current(lexer, PERIOD);}
+            if (is_next_word(lexer, "..."))
+            {
+                return lexer_advance_current(lexer, ELLIPSIS);
+            }
+            if (is_next_word(lexer, "."))
+            {
+                return lexer_advance_current(lexer, PERIOD);
+            }
         case '>':
-            if(is_next_word(lexer, ">>=")){return lexer_advance_current(lexer, RIGHT_ASSIGN);}
-            if(is_next_word(lexer, ">>")){return lexer_advance_current(lexer, RIGHT_OP);}
-            if(is_next_word(lexer, ">")){return lexer_advance_current(lexer, GREATER_THAN);}
-            if(is_next_word(lexer, ">=")){return lexer_advance_current(lexer, GE_OP);}
+            if (is_next_word(lexer, ">>="))
+            {
+                return lexer_advance_current(lexer, RIGHT_ASSIGN);
+            }
+            if (is_next_word(lexer, ">>"))
+            {
+                return lexer_advance_current(lexer, RIGHT_OP);
+            }
+            if (is_next_word(lexer, ">"))
+            {
+                return lexer_advance_current(lexer, GREATER_THAN);
+            }
+            if (is_next_word(lexer, ">="))
+            {
+                return lexer_advance_current(lexer, GE_OP);
+            }
         case '<':
-            if(is_next_word(lexer, "<<=")){return lexer_advance_current(lexer, LEFT_ASSIGN);}
-            if(is_next_word(lexer, "<<")){return lexer_advance_current(lexer, LEFT_OP);}
-            if(is_next_word(lexer, "<=")){return lexer_advance_current(lexer, LE_OP);}
-            if(is_next_word(lexer, "<")){return lexer_advance_current(lexer, LESS_THAN);}
+            if (is_next_word(lexer, "<<="))
+            {
+                return lexer_advance_current(lexer, LEFT_ASSIGN);
+            }
+            if (is_next_word(lexer, "<<"))
+            {
+                return lexer_advance_current(lexer, LEFT_OP);
+            }
+            if (is_next_word(lexer, "<="))
+            {
+                return lexer_advance_current(lexer, LE_OP);
+            }
+            if (is_next_word(lexer, "<"))
+            {
+                return lexer_advance_current(lexer, LESS_THAN);
+            }
         case '+':
-            if(is_next_word(lexer, "+=")){return lexer_advance_current(lexer, ADD_ASSIGN);}
-            if(is_next_word(lexer, "++")){return lexer_advance_current(lexer, INC_OP);}
-            if(is_next_word(lexer, "+")){return lexer_advance_current(lexer, PLUS);}
+            if (is_next_word(lexer, "+="))
+            {
+                return lexer_advance_current(lexer, ADD_ASSIGN);
+            }
+            if (is_next_word(lexer, "++"))
+            {
+                return lexer_advance_current(lexer, INC_OP);
+            }
+            if (is_next_word(lexer, "+"))
+            {
+                return lexer_advance_current(lexer, PLUS);
+            }
         case '-':
-            if(is_next_word(lexer, "-=")){return lexer_advance_current(lexer, SUB_ASSIGN);}
-            if(is_next_word(lexer, "--")){return lexer_advance_current(lexer, DEC_OP);}
-            if(is_next_word(lexer, "->")){return lexer_advance_current(lexer, PTR_OP);}
-            if(is_next_word(lexer, "-")){return lexer_advance_current(lexer, MINUS);}
+            if (is_next_word(lexer, "-="))
+            {
+                return lexer_advance_current(lexer, SUB_ASSIGN);
+            }
+            if (is_next_word(lexer, "--"))
+            {
+                return lexer_advance_current(lexer, DEC_OP);
+            }
+            if (is_next_word(lexer, "->"))
+            {
+                return lexer_advance_current(lexer, PTR_OP);
+            }
+            if (is_next_word(lexer, "-"))
+            {
+                return lexer_advance_current(lexer, MINUS);
+            }
         case '*':
-            if(is_next_word(lexer, "*=")){return lexer_advance_current(lexer, MUL_ASSIGN);}
-            if(is_next_word(lexer, "*")){return lexer_advance_current(lexer, MULTIPLY);}
+            if (is_next_word(lexer, "*="))
+            {
+                return lexer_advance_current(lexer, MUL_ASSIGN);
+            }
+            if (is_next_word(lexer, "*"))
+            {
+                return lexer_advance_current(lexer, MULTIPLY);
+            }
         case '/':
-            if(is_next_word(lexer, "/=")){return lexer_advance_current(lexer, DIV_ASSIGN);}
-            if(is_next_word(lexer, "/")){return lexer_advance_current(lexer, DIVIDE);}
+            if (is_next_word(lexer, "/="))
+            {
+                return lexer_advance_current(lexer, DIV_ASSIGN);
+            }
+            if (is_next_word(lexer, "/"))
+            {
+                return lexer_advance_current(lexer, DIVIDE);
+            }
         case '%':
-            if(is_next_word(lexer, "%=")){return lexer_advance_current(lexer, MOD_ASSIGN);}
-            if(is_next_word(lexer, "%")){return lexer_advance_current(lexer, PERCENT);}
+            if (is_next_word(lexer, "%="))
+            {
+                return lexer_advance_current(lexer, MOD_ASSIGN);
+            }
+            if (is_next_word(lexer, "%"))
+            {
+                return lexer_advance_current(lexer, PERCENT);
+            }
         case '&':
-            if(is_next_word(lexer, "&=")){return lexer_advance_current(lexer, AND_ASSIGN);}
-            if(is_next_word(lexer, "&&")){return lexer_advance_current(lexer, AND_OP);}
-            if(is_next_word(lexer, "&")){return lexer_advance_current(lexer, AMPERSAND);}
+            if (is_next_word(lexer, "&="))
+            {
+                return lexer_advance_current(lexer, AND_ASSIGN);
+            }
+            if (is_next_word(lexer, "&&"))
+            {
+                return lexer_advance_current(lexer, AND_OP);
+            }
+            if (is_next_word(lexer, "&"))
+            {
+                return lexer_advance_current(lexer, AMPERSAND);
+            }
         case '^':
-            if(is_next_word(lexer, "^=")){return lexer_advance_current(lexer, XOR_ASSIGN);}
-            if(is_next_word(lexer, "^")){return lexer_advance_current(lexer, CARET);}
+            if (is_next_word(lexer, "^="))
+            {
+                return lexer_advance_current(lexer, XOR_ASSIGN);
+            }
+            if (is_next_word(lexer, "^"))
+            {
+                return lexer_advance_current(lexer, CARET);
+            }
         case '|':
-            if(is_next_word(lexer, "|=")){return lexer_advance_current(lexer, OR_ASSIGN);}
-            if(is_next_word(lexer, "||")){return lexer_advance_current(lexer, OR_OP);}
-            if(is_next_word(lexer, "|")){return lexer_advance_current(lexer, VERTICAL_BAR);}
+            if (is_next_word(lexer, "|="))
+            {
+                return lexer_advance_current(lexer, OR_ASSIGN);
+            }
+            if (is_next_word(lexer, "||"))
+            {
+                return lexer_advance_current(lexer, OR_OP);
+            }
+            if (is_next_word(lexer, "|"))
+            {
+                return lexer_advance_current(lexer, VERTICAL_BAR);
+            }
         case '=':
-            if(is_next_word(lexer, "==")){return lexer_advance_current(lexer, EQ_OP);}
-            if(is_next_word(lexer, "=")){return lexer_advance_current(lexer, EQUALS);}
+            if (is_next_word(lexer, "=="))
+            {
+                return lexer_advance_current(lexer, EQ_OP);
+            }
+            if (is_next_word(lexer, "="))
+            {
+                return lexer_advance_current(lexer, EQUALS);
+            }
         case '!':
-            if(is_next_word(lexer, "!=")){return lexer_advance_current(lexer, NE_OP);} 
-            if(is_next_word(lexer, "!")){return lexer_advance_current(lexer, EXCLAMATION_MARK);}
+            if (is_next_word(lexer, "!="))
+            {
+                return lexer_advance_current(lexer, NE_OP);
+            }
+            if (is_next_word(lexer, "!"))
+            {
+                return lexer_advance_current(lexer, EXCLAMATION_MARK);
+            }
         case ';':
-            if(is_next_word(lexer, ";")){return lexer_advance_current(lexer, SEMICOLON);} 
+            if (is_next_word(lexer, ";"))
+            {
+                return lexer_advance_current(lexer, SEMICOLON);
+            }
         case '{':
-            if(is_next_word(lexer, "{")){return lexer_advance_current(lexer, L_BRACE);} 
+            if (is_next_word(lexer, "{"))
+            {
+                return lexer_advance_current(lexer, L_BRACE);
+            }
         case '}':
-            if(is_next_word(lexer, "}")){return lexer_advance_current(lexer, R_BRACE);} 
+            if (is_next_word(lexer, "}"))
+            {
+                return lexer_advance_current(lexer, R_BRACE);
+            }
         case ',':
-            if(is_next_word(lexer, ",")){return lexer_advance_current(lexer, COMMA);} 
+            if (is_next_word(lexer, ","))
+            {
+                return lexer_advance_current(lexer, COMMA);
+            }
         case ':':
-            if(is_next_word(lexer, ":")){return lexer_advance_current(lexer, COLON);} 
+            if (is_next_word(lexer, ":"))
+            {
+                return lexer_advance_current(lexer, COLON);
+            }
         case '(':
-            if(is_next_word(lexer, "(")){return lexer_advance_current(lexer, L_PARENTHESIS);} 
+            if (is_next_word(lexer, "("))
+            {
+                return lexer_advance_current(lexer, L_PARENTHESIS);
+            }
         case ')':
-            if(is_next_word(lexer, ")")){return lexer_advance_current(lexer, R_PARENTHESIS);} 
+            if (is_next_word(lexer, ")"))
+            {
+                return lexer_advance_current(lexer, R_PARENTHESIS);
+            }
         case '[':
-            if(is_next_word(lexer, "[")){return lexer_advance_current(lexer, L_BRACKET);} 
+            if (is_next_word(lexer, "["))
+            {
+                return lexer_advance_current(lexer, L_BRACKET);
+            }
         case ']':
-            if(is_next_word(lexer, "]")){return lexer_advance_current(lexer, R_BRACKET);} 
+            if (is_next_word(lexer, "]"))
+            {
+                return lexer_advance_current(lexer, R_BRACKET);
+            }
         case '~':
-            if(is_next_word(lexer, "~")){return lexer_advance_current(lexer, TILDE);}
+            if (is_next_word(lexer, "~"))
+            {
+                return lexer_advance_current(lexer, TILDE);
+            }
         case '?':
-            if(is_next_word(lexer, "?")){return lexer_advance_current(lexer, QUESTION_MARK);}
-        case '\0':
-            break; // breaks to EOF token
+            if (is_next_word(lexer, "?"))
+            {
+                return lexer_advance_current(lexer, QUESTION_MARK);
+            }
+        case '\'':
+            return lexer_parse_constant(lexer);
+        case '\0': // EOF
+            return init_token(0, END_OF_FILE);
         case '\xff':
             break;
-            // default:
-            //     printf("[Lexer]: Unexpected character `%c` (%d)\n", lexer->c, (int)lexer->c);
-            //     exit(1);
-            //     break;
+        default:
+            printf("[Lexer]: Unexpected character `%c` (%d)\n", lexer->c, (int)lexer->c);
+            exit(1);
+            break;
         }
 
         lexer_advance(lexer);
@@ -122,14 +259,15 @@ token_T *lexer_next_token(lexer_T *lexer)
     return init_token(0, END_OF_FILE);
 }
 
-token_T* lexer_peek_next_token(lexer_T* lexer, int words){
+token_T *lexer_peek_next_token(lexer_T *lexer, int words)
+{
     lexer_T temp_lexer;
 
     temp_lexer = *lexer;
-    temp_lexer.fp = fdopen (dup (fileno (lexer->fp)), "r");
-    // for(int i = 0; i < (words); i++){
-    //     lexer_next_token(&lexer);
-    // }
+    for (int i = 0; i < (words); i++)
+    {
+        lexer_next_token(&temp_lexer);
+    }
     return lexer_next_token(&temp_lexer);
 }
 
@@ -140,12 +278,13 @@ int is_next_word(lexer_T *lexer, char *str)
     {
         temp_str = strcat(temp_str, (char[]){lexer_peek(lexer, i), '\0'});
     }
-    return strcmp(temp_str, str);
+    
+    return (strcmp(temp_str, str) == 0);
 }
 
 char lexer_peek(lexer_T *lexer, int offset)
 {
-    return fseek(lexer->fp, offset, SEEK_CUR);
+    return lexer->src[lexer->i + offset];
 }
 
 void lexer_advance(lexer_T *lexer)
@@ -153,7 +292,8 @@ void lexer_advance(lexer_T *lexer)
 
     if (lexer->c != '\0')
     {
-        lexer->c = fgetc(lexer->fp);
+        lexer->i += 1;
+        lexer->c = lexer->src[lexer->i];
     }
 }
 
@@ -197,7 +337,8 @@ void lexer_skip_comment(lexer_T *lexer)
         else if (lexer->c == '*')
         {
             lexer_advance(lexer);
-            while(lexer->c != '*' && lexer_peek(lexer, 1) != '/'){
+            while (lexer->c != '*' && lexer_peek(lexer, 1) != '/')
+            {
                 lexer_advance(lexer);
             }
             lexer_advance(lexer);
@@ -206,20 +347,29 @@ void lexer_skip_comment(lexer_T *lexer)
     lexer_skip_whitespace(lexer);
 }
 
+token_T *lexer_parse_constant(lexer_T *lexer)
+{
+    switch (lexer->c)
+    {
+    case '\'':
+            lexer_advance(lexer);
+            return lexer_advance_current(lexer, CONSTANT);
+    default:
+        printf("[Lexer]: Unexpected character `%c` (%d)\n", lexer->c, (int)lexer->c);
+        exit(1);
+        break;
+    }
+}
+
 token_T *lexer_parse_id(lexer_T *lexer)
 {
     char *value = calloc(1, sizeof(char));
-    while (isalpha(lexer->c))
+    while (isalpha(lexer->c) || lexer->c == '_')
     {
         value = realloc(value, (strlen(value) + 2) * sizeof(char));
         strcat(value, (char[]){lexer->c, 0});
         lexer_advance(lexer);
     }
-    if (strcmp(value, "auto") == 0)
-        return init_token(value, AUTO);
-
-    
-
     if (strcmp(value, "auto") == 0)
         return init_token(value, AUTO);
     if (strcmp(value, "break") == 0)
@@ -286,7 +436,7 @@ token_T *lexer_parse_id(lexer_T *lexer)
         return init_token(value, WHILE);
     if (strcmp(value, "constant") == 0)
         return init_token(value, CONSTANT);
-    
+
     return init_token(value, IDENTIFIER);
 }
 

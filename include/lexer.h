@@ -5,7 +5,8 @@
 #include "token.h"
 
 typedef struct lexer_T{
-    FILE* fp;
+    // FILE* fp;
+    char* src;
     char c;
     unsigned int i;
 }lexer_T;
@@ -27,6 +28,8 @@ token_T* lexer_advance_with(lexer_T* lexer, token_T* token);
 void lexer_skip_whitespace(lexer_T* lexer);
 
 void lexer_skip_comment(lexer_T* lexer);
+
+token_T *lexer_parse_constant(lexer_T *lexer);
 
 token_T* lexer_parse_id(lexer_T* lexer);
 
