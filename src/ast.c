@@ -1,47 +1,42 @@
 
 #include "ast.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-
-// declaration
-decl *init_decl(char *name, struct type *type,
-                    struct expr *value, struct stmt *code, struct decl *next)
+node *init_node(node_type type, char *value)
 {
-    decl* node = calloc(1, sizeof(struct decl));
-    node->name = name;
-    node->type = type;
-    node->value = value;
-    node->code = code;
-    node->next = next;
-    return node;
+    node *n = calloc(1, sizeof(struct node));
+    n->type = type;
+    n->value.str = value;
+    return n;
 }
 
-// statement
-stmt *init_stmt(enum stmt_t kind, struct decl *decl, struct expr *init_expr, struct expr *expr,
-                    struct expr *next_expr, struct stmt *body, struct stmt *else_body, struct stmt *next)
+node *init_node_pair(node_type type,char* value, node *left, node *right)
 {
-    stmt* node = calloc(1, sizeof(struct stmt));
-    node->kind = kind;
-    node->decl = decl;
-    node->init_expr = init_expr;
-    node->expr = expr;
-    node->next_expr = next_expr;
-    node->body = body;
-    node->else_body = else_body;
-    node->next = next;
-    return node;
+    node *n = calloc(1, sizeof(struct node));
+    n->type = type;
+    n->value.pair.left = left;
+    n->value.pair.right = right;
+    return n;
 }
 
-// expression
-expr *init_expr(enum expr_t kind, struct expr *left, struct expr *right, const char *name,
-                    int integer_value, const char *string_literal)
-{
-    expr* node = calloc(1, sizeof(struct expr));
-    node->kind = kind;
-    node->left = left;
-    node->right = right;
-    node->name = name;
-    node->integer_value = integer_value;
-    node->string_literal = string_literal;
-    return node;
+
+
+void print_ast(node* n, int indent){
+    if(n == NULL){
+        return;
+    }
+    if(indent > 0){
+        char space[indent+1];
+        memset(space, ' ', indent * sizeof(char));
+        memset(space+indent, '\0', sizeof(char));
+        printf("%s", space);
+    }
+    printf("%s",n->value.str);
+    struct node *left, *right;
+    left = n->value.pair.left;
+    right = n->value.pair.right;
+    print_ast(left, indent + 2);
+    print_ast(right, indent);
 }

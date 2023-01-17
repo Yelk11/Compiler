@@ -1,6 +1,9 @@
 #include "lexer.h"
 #include "token.h"
+#include "parse.h"
 #include <stdlib.h>
+
+
 int main(int argc, char *argv[])
 {
     lexer_T *lexer;
@@ -43,14 +46,15 @@ int main(int argc, char *argv[])
     lexer = init_lexer(buffer);
 
 
-    token_T* token;
 
-    while(1){
+    printf("%d\n",parse(lexer));
+    // token_T* token;
+    // while(1){
         
-        token = lexer_next_token(lexer);
-        printf("%s : %s\n",type_to_string(token->type), token->value);
-        if (token->type == END_OF_FILE){break;}
-    }
+    //     token = lexer_next_token(lexer);
+    //     printf("%s : %s\n",type_to_string(token->type), token->value);
+    //     if (token->type == END_OF_FILE){break;}
+    // }
 
     free(buffer);
     return 0;
