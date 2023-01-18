@@ -2074,7 +2074,6 @@ function_definition
 */
 int is_function_definition(lexer_T *lexer, node *my_node)
 {
-
     if(is_declaration_specifiers(lexer, my_node)){
         if(is_declarator(lexer, my_node)){
             if(is_declaration_list(lexer, my_node)){
@@ -2098,40 +2097,6 @@ int is_function_definition(lexer_T *lexer, node *my_node)
             }
         }
     }else{
-        return false;
-    }
-
-
-
-
-
-    if (is_declaration_specifiers(lexer, my_node) &&
-        is_declarator(lexer, my_node) &&
-        is_declaration_list(lexer, my_node) &&
-        is_compound_statement(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_declaration_specifiers(lexer, my_node) &&
-             is_declarator(lexer, my_node) &&
-             is_compound_statement(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_declarator(lexer, my_node) &&
-             is_declaration_list(lexer, my_node) &&
-             is_compound_statement(lexer, my_node))
-    {
-        return true;
-    }
-    // goal
-    else if (is_declarator(lexer, my_node) &&
-             is_compound_statement(lexer, my_node))
-    {
-        return true;
-    }
-    else
-    {
         return false;
     }
 }
