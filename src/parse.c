@@ -2068,14 +2068,43 @@ int is_external_declaration(lexer_T *lexer, node *my_node)
 }
 /*
 function_definition
-    : declaration_specifiers declarator declaration_list compound_statement
-    | declaration_specifiers declarator compound_statement
-    | declarator declaration_list compound_statement
-    | declarator compound_statement
-    ;
+	: declaration_specifiers declarator {declaration_list || ""} compound_statement
+	| declarator {declaration_list || ""} compound_statement
+	;
 */
 int is_function_definition(lexer_T *lexer, node *my_node)
 {
+
+    if(is_declaration_specifiers(lexer, my_node)){
+        if(is_declarator(lexer, my_node)){
+            if(is_declaration_list(lexer, my_node)){
+                if(is_compound_statement(lexer, my_node)){
+                    return true;
+                }
+            }else{
+                if(is_compound_statement(lexer, my_node)){
+                    return true;
+                }
+            }
+        }
+    }else if(is_declarator(lexer, my_node)){
+        if(is_declaration_list(lexer, my_node)){
+            if(is_compound_statement(lexer, my_node)){
+                return true;
+            }
+        }else{
+            if(is_compound_statement(lexer, my_node)){
+                return true;
+            }
+        }
+    }else{
+        return false;
+    }
+
+
+
+
+
     if (is_declaration_specifiers(lexer, my_node) &&
         is_declarator(lexer, my_node) &&
         is_declaration_list(lexer, my_node) &&
