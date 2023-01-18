@@ -321,18 +321,15 @@ direct_abstract_declarator
 	: '(' abstract_declarator ')'
 	| '[' ']'
 	| '[' constant_expression ']'
-	| direct_abstract_declarator '[' ']'
-	| direct_abstract_declarator '[' constant_expression ']'
+	| direct_abstract_declarator '[' {constant_expression || ""} ']'
 	| '(' ')'
 	| '(' parameter_type_list ')'
-	| direct_abstract_declarator '(' ')'
-	| direct_abstract_declarator '(' parameter_type_list ')'
+	| direct_abstract_declarator '(' {parameter_type_list || ""} ')'
 	;
 
 initializer
 	: assignment_expression
-	| '{' initializer_list '}'
-	| '{' initializer_list ',' '}'
+	| '{' initializer_list {"," || ""}'}'
 	;
 
 initializer_list
@@ -356,38 +353,30 @@ labeled_statement
 	;
 
 compound_statement
-	: '{' '}'
-	| '{' statement_list '}'
-	| '{' declaration_list '}'
-	| '{' declaration_list statement_list '}'
+	: '{' {"" || statement_list || {declaration_list && {statement_list||""}}'}'
 	;
 
 declaration_list
-	: declaration
-	| declaration_list declaration
+	: {declaration_list || ""} declaration
 	;
 
 statement_list
-	: statement
-	| statement_list statement
+	: {statement_list || ""} statement
 	;
 
 expression_statement
-	: ';'
-	| expression ';'
+	: {expression || ""}';'
 	;
 
 selection_statement
-	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
+	: IF '(' expression ')' statement {ELSE statement || ""}
 	| SWITCH '(' expression ')' statement
 	;
 
 iteration_statement
 	: WHILE '(' expression ')' statement
 	| DO statement WHILE '(' expression ')' ';'
-	| FOR '(' expression_statement expression_statement ')' statement
-	| FOR '(' expression_statement expression_statement expression ')' statement
+	| FOR '(' expression_statement expression_statement {expression || ""}')' statement
 	;
 
 jump_statement
@@ -409,10 +398,8 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement
-	| declaration_specifiers declarator compound_statement
-	| declarator declaration_list compound_statement
-	| declarator compound_statement
+	: declaration_specifiers declarator {declaration_list || ""} compound_statement
+	| declarator {declaration_list || ""} compound_statement
 	;
 
 %%

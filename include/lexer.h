@@ -39,4 +39,5 @@ token_T* lexer_parse_string(lexer_T* lexer);
 
 token_T *lexer_parse_char(lexer_T *lexer);
 
+void print_lexer(lexer_T* lexer);
 #endif

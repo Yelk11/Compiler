@@ -289,7 +289,6 @@ char lexer_peek(lexer_T *lexer, int offset)
 
 void lexer_advance(lexer_T *lexer)
 {
-
     if (lexer->c != '\0')
     {
         lexer->i += 1;
@@ -363,11 +362,14 @@ token_T *lexer_parse_constant(lexer_T *lexer)
 
 token_T *lexer_parse_id(lexer_T *lexer)
 {
-    char *value = calloc(1, sizeof(char));
+    char * value = calloc(3, sizeof(char));
+    char cToStr[2];
+    cToStr[1] = '\0';
     while (isalpha(lexer->c) || lexer->c == '_')
     {
         value = realloc(value, (strlen(value) + 2) * sizeof(char));
-        strcat(value, (char[]){lexer->c, 0});
+        cToStr[0] = lexer->c;
+        strcat(value, cToStr);
         lexer_advance(lexer);
     }
     if (strcmp(value, "auto") == 0)
@@ -479,4 +481,12 @@ token_T *lexer_parse_char(lexer_T *lexer)
     *value = lexer->c;
     lexer_advance(lexer);
     return init_token(value, CHAR);
+}
+
+void print_lexer(lexer_T* lexer){
+    printf("LEXER PRINT START******\n");
+    //printf(" src: %s\n", lexer->src);
+    printf("char: %c\n", lexer->c);
+    printf("   i: %d\n", lexer->i);
+    printf("\n");
 }
