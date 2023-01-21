@@ -49,11 +49,12 @@ int main(int argc, char *argv[])
 
     printf("%d\n",parse(lexer));
     
-    token_T* token;
-    for(int i = 0; i < 3; i++){
-        token = lexer_peek_next_token(lexer,i);
-        printf("%s : %s\n",type_to_string(token->type), token->value);
-    }
+    // token_T* token;
+    // printf("%d\n",is_declarator(lexer, init_node(OPERATOR_NODE,"p")));
+    // for(int i = 0; i < 3; i++){
+    //     token = lexer_peek_next_token(lexer,i);
+    //     printf("%s : %s\n",type_to_string(token->type), token->value);
+    // }
     
     // token_T* token;
     // while(1){
