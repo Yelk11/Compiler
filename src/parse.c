@@ -907,22 +907,18 @@ declaration
 */
 int is_declaration(lexer_T *lexer, node *my_node)
 {
-    if (is_declaration_specifiers(lexer, my_node) &&
-        lexer_peek_next_token(lexer, 0)->type == SEMICOLON)
-    {
-        return true;
+    if (is_declaration_specifiers(lexer, my_node)){
+        if(lexer_peek_next_token(lexer, 0)->type == SEMICOLON){
+            return true;
+        }
+    }else if(is_declaration_specifiers(lexer, my_node)){
+        if(is_init_declarator_list(lexer, my_node)){
+            if(lexer_peek_next_token(lexer, 0)->type == SEMICOLON){
+                return true;
+            }
+        }
     }
-    else if (is_declaration_specifiers(lexer, my_node) &&
-             is_init_declarator_list(lexer, my_node) &&
-             lexer_peek_next_token(lexer, 0)->type == SEMICOLON)
-    {
-        return true;
-    }
-    else
-    {
-
-        return false;
-    }
+    return false;
 }
 /*
 declaration_specifiers
@@ -1458,12 +1454,11 @@ direct_declarator
 */
 int p_is_direct_declarator(lexer_T *lexer, node *my_node)
 {
-
-    return false;
+    // TODO
+    return true;
 }
 int is_direct_declarator(lexer_T *lexer, node *my_node)
 {
-
     if (lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
     {
         lexer_next_token(lexer);
@@ -1471,10 +1466,12 @@ int is_direct_declarator(lexer_T *lexer, node *my_node)
     }
     else if (lexer_peek_next_token(lexer, 0)->type == L_PARENTHESIS)
     {
+        lexer_next_token(lexer);
         if (is_declarator(lexer, my_node))
         {
             if (lexer_peek_next_token(lexer, 0)->type == R_PARENTHESIS)
             {
+                lexer_next_token(lexer);
                 return true;
             }
         }
@@ -1483,10 +1480,12 @@ int is_direct_declarator(lexer_T *lexer, node *my_node)
     {
         if (lexer_peek_next_token(lexer, 0)->type == L_BRACKET)
         {
+            lexer_next_token(lexer);
             if (is_constant_expression(lexer, my_node))
             {
                 if (lexer_peek_next_token(lexer, 0)->type == R_BRACKET)
                 {
+                    lexer_next_token(lexer);
                     return true;
                 }
             }
@@ -1494,12 +1493,14 @@ int is_direct_declarator(lexer_T *lexer, node *my_node)
             {
                 if (lexer_peek_next_token(lexer, 0)->type == R_BRACKET)
                 {
+                    lexer_next_token(lexer);
                     return true;
                 }
             }
         }
         else if (lexer_peek_next_token(lexer, 0)->type == L_PARENTHESIS)
         {
+            lexer_next_token(lexer);
             if (is_parameter_type_list(lexer, my_node))
             {
                 if (lexer_peek_next_token(lexer, 0)->type == R_PARENTHESIS)
@@ -2071,7 +2072,7 @@ int p_is_declaration_list(lexer_T *lexer, node *my_node)
 }
 int is_declaration_list(lexer_T *lexer, node *my_node)
 {
-    if (!p_is_declaration_list(lexer, my_node)) // NOT p_is_declaration_list
+    if (p_is_declaration_list(lexer, my_node))
     {
         if (is_declaration(lexer, my_node))
         {
@@ -2409,7 +2410,7 @@ int is_function_definition(lexer_T *lexer, node *my_node)
     if (is_declaration_specifiers(lexer, my_node))
     {
         // GOAL
-        if (is_declarator(lexer, my_node))
+        if (is_declarator(lexer, my_node))// reached
         {
             if (is_declaration_list(lexer, my_node))
             {
