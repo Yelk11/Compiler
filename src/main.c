@@ -1,14 +1,17 @@
 #include "lex.h"
+#include "token.h"
 #include <stdio.h>
 
 int main(){
-    char* source = "LET foobar = 123";
-	lexer_T* lexer = init_lexer(source);
+    char* source = "+- */";
 
-	while (peek(lexer) != '\0')
-	{
-        printf("%c",lexer->curChar);
-		nextChar(lexer);
+    lexer_T* lexer = init_lexer(source);
+
+    token_T* token = getToken(lexer);
+    while (token->kind != EOF)
+    {
+        printf("%d",token->kind);
+        token = getToken(lexer);
     }
 }
 

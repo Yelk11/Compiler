@@ -1,6 +1,8 @@
 #ifndef LEX_H
 #define LEX_H
 
+#include "token.h"
+
 typedef struct lexer_T{
     char* source;
     char curChar;
@@ -19,6 +21,6 @@ void skipWhitespace(lexer_T* lexer);
 
 void skipComment(lexer_T* lexer);
 
-void getToken(lexer_T* lexer);
+token_T* getToken(lexer_T* lexer);
 
 #endif
