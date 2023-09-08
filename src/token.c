@@ -9,3 +9,93 @@ token_T* init_token(char tokenText, int tokenKind)
     token->kind = tokenKind;
     return token;
 }
+
+
+char* get_token_name(int token)
+{
+    switch(token)
+    {
+        case EOF:
+            return "EOF";
+            break;	
+        case NEWLINE:
+            return "NEWLINE";
+            break;
+	    case NUMBER:
+            return "NUMBER";
+            break;
+	    case IDENT:
+            return "IDENT";
+            break;
+	    case STRING:
+            return "STRING";
+            break;
+	    case LABEL:
+            return "LABEL";
+            break;
+	    case GOTO:
+            return "GOTO";
+            break;
+	    case PRINT:
+            return "PRINT";
+            break;
+	    case INPUT:
+            return "INPUT";
+            break;
+	    case LET:
+            return "LET";
+            break;
+	    case IF:
+            return "IF";
+            break;
+	    case THEN:
+            return "THEN";
+            break;
+	    case ENDIF:
+            return "ENDIF";
+            break;
+	    case WHILE:
+            return "WHILE";
+            break;
+	    case REPEAT:
+            return "REPEAT";
+            break;
+	    case ENDWHILE:
+            return "ENDWHILE";
+            break;
+	    case EQ:
+            return "EQ";
+            break;
+	    case PLUS:
+            return "PLUS";
+            break;
+	    case MINUS:
+            return "MINUS";
+            break;
+	    case ASTERISK:
+            return "ASTERISK";
+            break;
+	    case SLASH:
+            return "SLASH";
+            break;
+	    case EQEQ:
+            return "EQEQ";
+            break;
+	    case NOTEQ:
+            return "NOTEQ";
+            break;
+	    case LT:
+            return "LT";
+            break;
+	    case LTEQ:
+            return "LTEQ";
+            break;
+	    case GT:
+            return "GT";
+            break;
+	    case GTEQ:
+            return "GTEQ";
+            break;
+    }
+    return "TOKEN_UKNOWN";
+}

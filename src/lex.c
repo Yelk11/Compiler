@@ -104,7 +104,6 @@ token_T* getToken(lexer_T *lexer)
     {
         token = init_token(' ', EOF);
     }
-    
     else
     {
         lex_abort("Uknown token");

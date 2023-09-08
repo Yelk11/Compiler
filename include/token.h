@@ -41,5 +41,5 @@ enum tokens
 	GT = 210,
 	GTEQ = 211
 };
-
+char* get_token_name(int token);
 #endif

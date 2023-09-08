@@ -10,7 +10,7 @@ int main(){
     token_T* token = getToken(lexer);
     while (token->kind != EOF)
     {
-        printf("%d",token->kind);
+        printf("%s\n",get_token_name(token->kind));
         token = getToken(lexer);
     }
 }
