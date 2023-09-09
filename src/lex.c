@@ -73,42 +73,84 @@ token_T* getToken(lexer_T *lexer)
     // If it is a multiple character operator (e.g., !=), number, identifier, or keyword then we will process the rest.
     if (lexer->curChar == '+')
     {
-        token = init_token(lexer->curChar, PLUS);
+        token = init_token(&lexer->curChar, PLUS);
     }
     else if (lexer->curChar == '-')
     {
-        token = init_token(lexer->curChar, MINUS);
+        token = init_token(&lexer->curChar, MINUS);
     }
     else if (lexer->curChar == '*')
     {
-        token = init_token(lexer->curChar, ASTERISK);
+        token = init_token(&lexer->curChar, ASTERISK);
     }
     else if (lexer->curChar == '/')
     {
-        token = init_token(lexer->curChar, SLASH);
+        token = init_token(&lexer->curChar, SLASH);
     }
     else if (lexer->curChar == '=')
     {
         // Check whether this token is = or ==
         if (peek(lexer) == '=')
         {
-            char lastChar = lexer->curChar;
             nextChar(lexer);
-            token = init_token(lastChar + lexer->curChar, EQEQ);
+            token = init_token("==", EQEQ);
         }
         else
         {
-            token = init_token(lexer->curChar, EQ);
+            token = init_token("=", EQ);
         }
             
     }
+    else if(lexer->curChar == '>')
+    {
+        // Check whether this is token is > or >=
+        if (peek(lexer) == '=')
+        {
+            nextChar(lexer);
+            token = init_token(">=", GTEQ);
+        }
+        else
+        {
+            token = init_token(">", GT);
+        }
+            
+    }
+    else if(lexer->curChar == '<')
+    {
+        // Check whether this is token is < or <=
+        if( peek(lexer) == '=')
+        {
+            nextChar(lexer);
+            token = init_token("<=", LTEQ);
+        }
+        else
+        {
+            token = init_token("<", LT);
+        }
+    }
+    else if(lexer->curChar == '!')
+    {
+        if (peek(lexer) == '=')
+        {
+            nextChar(lexer);
+            token = init_token("!=", NOTEQ);
+        }   
+        else
+        {
+            char str[20] = "Expected !=, got !";
+            str[18] = peek(lexer);
+            lex_abort(str);
+        }
+                
+    }
+            
     else if (lexer->curChar == '\n')
     {
-        token = init_token(lexer->curChar, NEWLINE);
+        token = init_token(&lexer->curChar, NEWLINE);
     }
     else if (lexer->curChar == '\0')
     {
-        token = init_token(' ', EOF);
+        token = init_token(" ", EOF);
     }
     else
     {

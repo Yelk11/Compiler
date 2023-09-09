@@ -2,11 +2,11 @@
 #define TOKEN_H
 
 typedef struct token_T{
-    char text;
+    char* text;
     int kind;
 }token_T;
 
-token_T* init_token(char tokenText, int tokenKind);
+token_T* init_token(char* tokenText, int tokenKind);
 
 
 enum tokens
