@@ -52,6 +52,11 @@ void lex_abort(char *message)
 // Skip whitespace except newlines, which we will use to indicate the end of a statement.
 void skipWhitespace(lexer_T *lexer)
 {
+    while (lexer->curChar == ' '|| lexer->curChar == '\t' || lexer->curChar == '\r')
+    {
+        nextChar(lexer);
+    }
+
 }
 
 // Skip comments in the code.
@@ -62,6 +67,7 @@ void skipComment(lexer_T *lexer)
 // Return the next token.
 token_T* getToken(lexer_T *lexer)
 {
+    skipWhitespace(lexer);
     token_T *token = NULL;
     // Check the first character of this token to see if we can decide what it is.
     // If it is a multiple character operator (e.g., !=), number, identifier, or keyword then we will process the rest.
