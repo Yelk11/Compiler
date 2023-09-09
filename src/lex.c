@@ -106,7 +106,9 @@ token_T* getToken(lexer_T *lexer)
     }
     else
     {
-        lex_abort("Uknown token");
+        char str[15] = "Uknown token";
+        strcpy(str, &lexer->curChar);
+        lex_abort(str);
     }
 
     nextChar(lexer);
