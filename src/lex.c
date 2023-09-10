@@ -1,9 +1,10 @@
 #include "lex.h"
+#include "string_util.h"
 
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <ctype.h>
 
 lexer_T *init_lexer(char *source)
 {
@@ -62,12 +63,19 @@ void skipWhitespace(lexer_T *lexer)
 // Skip comments in the code.
 void skipComment(lexer_T *lexer)
 {
+    if (lexer->curChar == '#'){
+        while (lexer->curChar != '\n')
+        {
+            nextChar(lexer);
+        }
+    }          
 }
 
 // Return the next token.
 token_T* getToken(lexer_T *lexer)
 {
     skipWhitespace(lexer);
+    skipComment(lexer);
     token_T *token = NULL;
     // Check the first character of this token to see if we can decide what it is.
     // If it is a multiple character operator (e.g., !=), number, identifier, or keyword then we will process the rest.
@@ -140,10 +148,53 @@ token_T* getToken(lexer_T *lexer)
             char str[20] = "Expected !=, got !";
             str[18] = peek(lexer);
             lex_abort(str);
-        }
-                
+        }      
     }
-            
+    else if (lexer->curChar == '\"')
+    {
+        // Get characters between quotations.
+        nextChar(lexer);
+        int startPos = lexer->curPos;
+
+        while (lexer->curChar != '\"')
+        {
+            // Don't allow special characters in the string. No escape characters, newlines, tabs, or %.
+            // We will be using C's printf on this string.
+            if (lexer->curChar == '\r' || lexer->curChar == '\n' || lexer->curChar == '\t' || lexer->curChar == '\\' || lexer->curChar == '%')
+            {
+                lex_abort("Illegal character in string.");
+            }
+            nextChar(lexer);
+        }
+        char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
+        token = init_token(tokText, STRING);
+    }
+    else if(isdigit(lexer->curChar))
+    {
+        // Leading character is a digit, so this must be a number.
+        // Get all consecutive digits and decimal if there is one.
+        int startPos = lexer->curPos;
+        while(isdigit(peek(lexer)))
+        {
+            nextChar(lexer);
+        }
+        if(peek(lexer) == '.') // Decimal
+        {
+            nextChar(lexer);
+            // Must have at least one digit after decimal.
+            if (isdigit(peek(lexer)) != 1)
+            {
+                // Error!
+                lex_abort("Illegal character in number.");
+            }
+            while (isdigit(peek(lexer)))
+            {
+                nextChar(lexer);
+            }
+            char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
+            token = init_token(tokText, NUMBER);
+        }
+    }
     else if (lexer->curChar == '\n')
     {
         token = init_token(&lexer->curChar, NEWLINE);

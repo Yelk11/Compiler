@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int main(){
-    char* source = "+- */";
+    char* source = "+- \"This is a string\" # This is a comment!\n */";
 
     lexer_T* lexer = init_lexer(source);
 
