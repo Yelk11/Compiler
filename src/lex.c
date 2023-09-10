@@ -191,9 +191,10 @@ token_T* getToken(lexer_T *lexer)
             {
                 nextChar(lexer);
             }
-            char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
-            token = init_token(tokText, NUMBER);
+            
         }
+        char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
+        token = init_token(tokText, NUMBER);
     }
     else if (lexer->curChar == '\n')
     {
