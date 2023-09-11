@@ -9,7 +9,18 @@ token_T* init_token(char* tokenText, int tokenKind)
     token->kind = tokenKind;
     return token;
 }
-
+token_T* checkIfKeyword(char* tokenText)
+{
+    for(int i=EOF; i<=GTEQ; i++) {
+        if(tokenText == get_token_name(i) && i >= 100 && i < 200)
+        {
+            token_T* token = init_token(tokenText, i);
+            return token;
+        }
+    }
+    return NULL;
+}
+        
 
 char* get_token_name(int token)
 {

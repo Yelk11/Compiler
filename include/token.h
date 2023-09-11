@@ -8,6 +8,9 @@ typedef struct token_T{
 
 token_T* init_token(char* tokenText, int tokenKind);
 
+char* get_token_name(int token);
+
+token_T* checkIfKeyword(char* tokenText);
 
 enum tokens
 {
@@ -41,5 +44,5 @@ enum tokens
 	GT = 210,
 	GTEQ = 211
 };
-char* get_token_name(int token);
+
 #endif

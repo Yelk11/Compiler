@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int main(){
-    char* source = "+-123 9.8654*/";
+    char* source = "F+-123 foo*THEN/";
 
     lexer_T* lexer = init_lexer(source);
 

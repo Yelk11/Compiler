@@ -196,6 +196,29 @@ token_T* getToken(lexer_T *lexer)
         char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
         token = init_token(tokText, NUMBER);
     }
+    else if(isalpha(lexer->curChar))
+    {
+        // Leading character is a letter, so this must be an identifier or a keyword.
+        // Get all consecutive alpha numeric characters.
+        int startPos = lexer->curPos;
+        while (isalnum(peek(lexer)))
+        {
+            nextChar(lexer);
+        }
+
+        // Check if the token is in the list of keywords.
+        char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
+        
+        token_T* keyword = checkIfKeyword(tokText);
+        if (keyword == NULL) // Identifier
+        {
+            token = init_token(tokText, IDENT);
+        }
+        else   // Keyword
+        {
+            token = keyword;
+        }
+    }       
     else if (lexer->curChar == '\n')
     {
         token = init_token(&lexer->curChar, NEWLINE);
