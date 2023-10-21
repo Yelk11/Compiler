@@ -3,26 +3,26 @@
 #include <string.h>
 #include <stdlib.h>
 
-char *substring(char *string, int position, int length)
+char *substring(FILE* fp, int position, int length)
 {
-   char *p;
-   int c;
+   char *new_string;
+   int character;
  
-   p = malloc(length+1);
+   new_string = malloc(length+1);
    
-   if (p == NULL)
+   if (new_string == NULL)
    {
       printf("Unable to allocate memory.\n");
       exit(1);
    }
  
-   for (c = 0; c < length; c++)
+   for (character = 0; character < length; character++)
    {
-      *(p+c) = *(string+position-1);      
+      *(new_string+character) = *(string + position - 1);      
       string++;  
    }
  
-   *(p+c) = '\0';
+   *(new_string+character) = '\0';
  
-   return p;
+   return new_string;
 }

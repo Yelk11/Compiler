@@ -6,13 +6,10 @@
 #include <stdio.h>
 #include <ctype.h>
 
-lexer_T *init_lexer(char *source)
+lexer_T *init_lexer(FILE *fp)
 {
     lexer_T *lexer = calloc(1, sizeof(lexer_T));
-    char *newstr = malloc(strlen(source) + 4);
-    strcpy(newstr, source);
-    strcat(newstr, "\n\n");
-    lexer->source = newstr; // Source code to lex as a string. Append a newline to simplify lexing/parsing the last token/statement.
+    lexer->fp = fp; // Source code to lex as a string. Append a newline to simplify lexing/parsing the last token/statement.
     lexer->curChar = ' ';   // Current character in the string.
     lexer->curPos = -1;     // Current position in the string.
     nextChar(lexer);
@@ -20,27 +17,27 @@ lexer_T *init_lexer(char *source)
 }
 
 // Process the next character.
-void nextChar(lexer_T *lexer)
+int nextChar(lexer_T *lexer)
 {
     lexer->curPos += 1;
-    if (lexer->curPos >= strlen(lexer->source))
+    int character = fgetc(lexer->fp);
+    if (character == EOF)
     {
         lexer->curChar = '\0'; // EOF
     }
     else
     {
-        lexer->curChar = lexer->source[lexer->curPos];
+        lexer->curChar = character;
     }
+    return character;
 }
 
 // Return the lookahead character.
 char peek(lexer_T *lexer)
 {
-    if (lexer->curPos + 1 >= strlen(lexer->source))
-    {
-        return '\0';
-    }
-    return lexer->source[lexer->curPos + 1];
+    int character = fgetc(lexer->fp);
+    ungetc(character, lexer->fp);
+    return character;
 }
 
 // Invalid token found, print error message and exit.
@@ -154,9 +151,12 @@ token_T* getToken(lexer_T *lexer)
     {
         // Get characters between quotations.
         nextChar(lexer);
-        int startPos = lexer->curPos;
+        char character;
+        char* string = "";
 
-        while (lexer->curChar != '\"')
+        fgetc(lexer->fp);
+        strncat(string, &character, 1);
+        while (character != '\"')
         {
             // Don't allow special characters in the string. No escape characters, newlines, tabs, or %.
             // We will be using C's printf on this string.
@@ -164,16 +164,18 @@ token_T* getToken(lexer_T *lexer)
             {
                 lex_abort("Illegal character in string.");
             }
-            nextChar(lexer);
+            fgetc(lexer->fp);
+            strncat(string, &character, 1);
         }
-        char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
-        token = init_token(tokText, STRING);
+        token = init_token(string, STRING);
     }
     else if(isdigit(lexer->curChar))
     {
         // Leading character is a digit, so this must be a number.
         // Get all consecutive digits and decimal if there is one.
         int startPos = lexer->curPos;
+
+        char* string = "";
         while(isdigit(peek(lexer)))
         {
             nextChar(lexer);
@@ -193,7 +195,8 @@ token_T* getToken(lexer_T *lexer)
             }
             
         }
-        char* tokText = substring(lexer->source, startPos, lexer->curPos - startPos); // Get the substring.
+
+        char* tokText = substring(lexer->fp, startPos, lexer->curPos - startPos); // Get the substring.
         token = init_token(tokText, NUMBER);
     }
     else if(isalpha(lexer->curChar))
