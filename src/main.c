@@ -16,14 +16,12 @@ int main(int argc, char *argv[])
     {
         file_name = "test.c";
     }
-    
-    
 
     FILE *fp;
     long lSize;
     char *buffer;
 
-    fp = fopen(file_name, "rb");
+    fp = fopen("test.c", "r");
     if (!fp)
         perror("blah.txt"), exit(1);
 
