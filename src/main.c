@@ -2,12 +2,15 @@
 #include "token.h"
 #include "parse.h"
 #include <stdlib.h>
-
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
     lexer_T *lexer;
     char *file_name;
+    int errnum;
     if (argc > 1)
     {
         file_name = argv[1];
@@ -16,15 +19,20 @@ int main(int argc, char *argv[])
     {
         file_name = "test.c";
     }
-
-    FILE *fp;
+    
     long lSize;
     char *buffer;
-
-    fp = fopen("test.c", "r");
-    if (!fp)
-        perror("blah.txt"), exit(1);
-
+        
+    FILE* fp = fopen("/Users/matt/sandbox/Compiler/test.c", "rb");
+    if (fp == NULL) {
+        errnum = errno;
+      fprintf(stderr, "Value of errno: %d\n", errno);
+      perror("Error printed by perror");
+      fprintf(stderr, "Error opening file: %s\n", strerror( errnum ));
+   
+        printf("nope\n");
+        exit(2);
+    }
     fseek(fp, 0L, SEEK_END);
     lSize = ftell(fp);
     rewind(fp);
@@ -46,14 +54,16 @@ int main(int argc, char *argv[])
 
 
     printf("%d\n",parse(lexer));
-    // token_T* token;
-    // while(1){
+    token_T* token;
+    while(1){
         
-    //     token = lexer_next_token(lexer);
-    //     printf("%s : %s\n",type_to_string(token->type), token->value);
-    //     if (token->type == END_OF_FILE){break;}
-    // }
+        token = lexer_next_token(lexer);
+        printf("%s : %s\n",type_to_string(token->type), token->value);
+        if (token->type == END_OF_FILE){break;}
+    }
 
     free(buffer);
     return 0;
 }
+
+
