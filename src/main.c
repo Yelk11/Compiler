@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
     token_T *token;
     while (1)
     {
-
         token = lexer_next_token(lexer);
         printf("%s : %s\n", type_to_string(token->type), token->value);
         if (token->type == END_OF_FILE)

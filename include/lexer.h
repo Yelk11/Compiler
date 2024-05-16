@@ -5,7 +5,6 @@
 #include "token.h"
 
 typedef struct lexer_T{
-    // FILE* fp;
     char* src;
     char c;
     unsigned int i;
