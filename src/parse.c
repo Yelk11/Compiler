@@ -22,14 +22,10 @@
 %%
 */
 
-
-
-
-
 int parse(lexer_T *lexer)
 {
     node *node = init_node_pair(INT, "int", NULL, NULL);
-    
+
     if (is_function_definition(*lexer, *node))
     {
         return true;
@@ -143,16 +139,15 @@ int is_postfix_expression(lexer_T lexer, node my_node)
     }
 }
 
-
-
 /*
 argument_expression_list
     : assignment_expression
     | argument_expression_list ',' assignment_expression
     ;
 */
-int p_is_argument_expression_list(lexer_T lexer, node my_node){
-    return false;// TODO implement is_argument_expression_list
+int p_is_argument_expression_list(lexer_T lexer, node my_node)
+{
+    return false; // TODO implement is_argument_expression_list
 }
 int is_argument_expression_list(lexer_T lexer, node my_node)
 {
@@ -752,7 +747,7 @@ int is_declaration(lexer_T lexer, node my_node)
     }
     else
     {
-        
+
         return false;
     }
 }
@@ -806,7 +801,8 @@ init_declarator_list
     | init_declarator_list ',' init_declarator
     ;
 */
-int p_is_init_declarator_list(lexer_T lexer, node my_node){
+int p_is_init_declarator_list(lexer_T lexer, node my_node)
+{
     return false; // TODO imeplement p_is_init_declarator_list
 }
 int is_init_declarator_list(lexer_T lexer, node my_node)
@@ -1013,7 +1009,8 @@ struct_declaration_list
     | struct_declaration_list struct_declaration
     ;
 */
-int p_is_struct_declaration_list(lexer_T lexer, node my_node){
+int p_is_struct_declaration_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_struct_declaration_list
 }
 int is_struct_declaration_list(lexer_T lexer, node my_node)
@@ -1058,7 +1055,8 @@ specifier_qualifier_list
     | type_qualifier
     ;
 */
-int p_is_specifier_qualifier_list(lexer_T lexer, node my_node){
+int p_is_specifier_qualifier_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_specifier_qualifier_list
 }
 int is_specifier_qualifier_list(lexer_T lexer, node my_node)
@@ -1092,7 +1090,8 @@ struct_declarator_list
     | struct_declarator_list ',' struct_declarator
     ;
 */
-int p_is_struct_declarator_list(lexer_T lexer, node my_node){
+int p_is_struct_declarator_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_struct_declarator_list
 }
 int is_struct_declarator_list(lexer_T lexer, node my_node)
@@ -1181,7 +1180,8 @@ enumerator_list
     | enumerator_list ',' enumerator
     ;
 */
-int p_is_enumerator_list(lexer_T lexer, node my_node){
+int p_is_enumerator_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_enumerator_list
 }
 int is_enumerator_list(lexer_T lexer, node my_node)
@@ -1370,7 +1370,8 @@ type_qualifier_list
     ;
 
 */
-int p_is_type_qualifier_list(lexer_T lexer, node my_node){
+int p_is_type_qualifier_list(lexer_T lexer, node my_node)
+{
     return false; // implement p_is_type_qualifier_list
 }
 int is_type_qualifier_list(lexer_T lexer, node my_node)
@@ -1418,7 +1419,8 @@ parameter_list
     | parameter_list ',' parameter_declaration
     ;
 */
-int p_is_parameter_list(lexer_T lexer, node my_node){
+int p_is_parameter_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_parameter_list
 }
 int is_parameter_list(lexer_T lexer, node my_node)
@@ -1472,7 +1474,8 @@ identifier_list
     | identifier_list ',' IDENTIFIER
     ;
 */
-int p_is_identifier_list(lexer_T lexer, node my_node){
+int p_is_identifier_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_identifier_list
 }
 int is_identifier_list(lexer_T lexer, node my_node)
@@ -1652,7 +1655,8 @@ initializer_list
     | initializer_list ',' initializer
     ;
 */
-int p_is_initializer_list(lexer_T lexer, node my_node){
+int p_is_initializer_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement p_is_initializer_list
 }
 int is_initializer_list(lexer_T lexer, node my_node)
@@ -1791,7 +1795,8 @@ declaration_list
     | declaration_list declaration
     ;
 */
-int p_is_declaration_list(lexer_T lexer, node my_node){
+int p_is_declaration_list(lexer_T lexer, node my_node)
+{
     return false; // TODO implement is declation list
 }
 int is_declaration_list(lexer_T lexer, node my_node)
@@ -1816,8 +1821,9 @@ statement_list
     | statement_list statement
     ;
 */
-int p_is_statement_list(lexer_T lexer, node my_node){
-    return false; //TODO implement p_is_statement_list
+int p_is_statement_list(lexer_T lexer, node my_node)
+{
+    return false; // TODO implement p_is_statement_list
 }
 int is_statement_list(lexer_T lexer, node my_node)
 {
@@ -1984,7 +1990,7 @@ int is_jump_statement(lexer_T lexer, node my_node)
     else if (lexer_next_token(&lexer)->type == RETURN &&
              is_expression(lexer, my_node) &&
              lexer_next_token(&lexer)->type == SEMICOLON)
-             
+
     {
         return true;
     }

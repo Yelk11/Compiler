@@ -17,20 +17,20 @@ int main(int argc, char *argv[])
     }
     else
     {
-        file_name = "test.c";
+        file_name = "example/test.c";
     }
-    
+
     long lSize;
     char *buffer;
-        
-    FILE* fp = fopen(file_name, "rb");
-    if (fp == NULL) {
+
+    FILE *fp = fopen(file_name, "rb");
+    if (fp == NULL)
+    {
         errnum = errno;
-      fprintf(stderr, "Value of errno: %d\n", errno);
-      perror("Error printed by perror");
-      fprintf(stderr, "Error opening file: %s\n", strerror( errnum ));
-   
-        printf("nope\n");
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror");
+        fprintf(stderr, "Error opening file: %s\n", strerror(errnum));
+
         exit(2);
     }
     fseek(fp, 0L, SEEK_END);
@@ -48,20 +48,20 @@ int main(int argc, char *argv[])
     fclose(fp);
     /* do your work here, buffer is a string contains the whole text */
 
-    
     lexer = init_lexer(buffer);
 
+    token_T *token;
+    while (1)
+    {
 
-    token_T* token;
-    while(1){
-        
         token = lexer_next_token(lexer);
-        printf("%s : %s\n",type_to_string(token->type), token->value);
-        if (token->type == END_OF_FILE){break;}
+        printf("%s : %s\n", type_to_string(token->type), token->value);
+        if (token->type == END_OF_FILE)
+        {
+            break;
+        }
     }
 
     free(buffer);
     return 0;
 }
-
-
