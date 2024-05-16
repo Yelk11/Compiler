@@ -1,0 +1,76 @@
+
+
+Tokens:
+    keyword:
+        [ ]auto, 
+        [ ]break, 
+        [ ]case, 
+        [ ]char, 
+        [ ]const, 
+        [ ]continue, 
+        [ ]default, 
+        [ ]do,
+        [ ]double, 
+        [ ]else, 
+        [ ]enum, 
+        [ ]extern, 
+        [ ]float, 
+        [ ]for, 
+        [ ]goto, 
+        [ ]if,
+        [ ]int, 
+        [ ]long, 
+        [ ]register, 
+        [ ]return, 
+        [ ]short, 
+        [ ]signed, 
+        [ ]sizeof, 
+        [ ]static
+        [ ]struct, 
+        [ ]switch, 
+        [ ]typedef, 
+        [ ]union, 
+        [ ]unsigned, 
+        [ ]void, 
+        [ ]volatile, 
+        [ ]while
+    identifier:
+        the first charector must be a non-digit
+        non-digit: _ a b c A B C...
+        digit: 0123456789
+    constant:
+        a constant
+    string-literal:
+        "charector sequence" or char
+    operator:
+        [ ] ( ) . ->
+        ++ -- 6 * + - .” ! sizeof
+        / % << >> < > <= >= == != ^ | && ||
+        = *= /= %= += -= <<= >>= b= A= I=
+        , # ##
+        (),[],?: must show up in pairs
+    punctuator:
+        [] () {} * , : = ; ... #
+
+preprocessing token:
+    pg 32
+    header-name:
+        #include<HEADER_NAME>  <> or ""
+    (ignored) preprocessing numbers
+    comments: /* */ when not inside another comment (comments do not nest)
+    identifier
+    pp-number
+    charector-constant
+    string-literal
+    operator
+    punctuator
+    each non-white-space harector that cannot be one of the above
+
+
+
+
+
+
+
+
+
