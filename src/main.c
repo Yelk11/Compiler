@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     long lSize;
     char *buffer;
         
-    FILE* fp = fopen("/Users/matt/sandbox/Compiler/test.c", "rb");
+    FILE* fp = fopen(file_name, "rb");
     if (fp == NULL) {
         errnum = errno;
       fprintf(stderr, "Value of errno: %d\n", errno);
@@ -52,8 +52,6 @@ int main(int argc, char *argv[])
     lexer = init_lexer(buffer);
 
 
-
-    printf("%d\n",parse(lexer));
     token_T* token;
     while(1){
         
