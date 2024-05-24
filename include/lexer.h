@@ -5,9 +5,9 @@
 #include "token.h"
 
 typedef struct lexer_T{
-    char* src;
-    char c;
-    unsigned int i;
+    char* src;      // source code
+    char c;         // current charector
+    unsigned int i; // iterator
 }lexer_T;
 
 lexer_T* init_lexer(char* src);

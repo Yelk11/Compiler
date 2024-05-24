@@ -46,7 +46,7 @@ primary_expression
 */
 int is_primary_expression(lexer_T lexer, node my_node)
 {
-
+    
     if (lexer_next_token(&lexer)->type == IDENTIFIER)
     {
         return true;
@@ -83,7 +83,6 @@ postfix_expression
     | postfix_expression DEC_OP
     ;
 */
-
 int is_postfix_expression(lexer_T lexer, node my_node)
 {
 

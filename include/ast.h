@@ -21,7 +21,7 @@ typedef struct pair_value
 typedef char *string_constant;
 
 // Union only allows for one of the variables to be populated
-typedef struct node_value
+union node_value
 {
     pair_value pair;
     string_constant str;
@@ -30,7 +30,7 @@ typedef struct node_value
 typedef struct node
 {
     node_type type;
-    node_value value;
+    union node_value value;
 } node;
 
 node *init_node(node_type type, char *value);
