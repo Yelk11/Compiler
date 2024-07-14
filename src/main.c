@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
     lexer = init_lexer(buffer);
 
-    token_T *token;
+    // token_T *token;
     // while (1)
     // {
     //     token = lexer_next_token(lexer);
@@ -60,8 +60,11 @@ int main(int argc, char *argv[])
     //         break;
     //     }
     // }
+
+
     node_T* node = NULL;
-    print("Parsing: %d",parse(lexer, node));
+    printf("Parse: %d\n",parse(*lexer, node));
+    print_ast(node, 10);
     free(buffer);
     return 0;
 }

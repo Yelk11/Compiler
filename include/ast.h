@@ -141,4 +141,6 @@ node_T* node_statement(node_T* parent, token_T* token);
 node_T* node_declaration(node_T* parent, token_T* token);
 node_T* node_type(node_T* parent, token_T* token);
 node_T* node_control_flow(node_T* parent, token_T* token);
+
+void print_ast(node_T* n, int indent);
 #endif

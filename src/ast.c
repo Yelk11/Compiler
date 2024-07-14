@@ -79,20 +79,18 @@ node_T* node_control_flow(node_T* parent, token_T* token)
     return node;
 }
 
-// void print_ast(node_T* n, int indent){
-//     if(n == NULL){
-//         return;
-//     }
-//     if(indent > 0){
-//         char space[indent+1];
-//         memset(space, ' ', indent * sizeof(char));
-//         memset(space+indent, '\0', sizeof(char));
-//         printf("%s", space);
-//     }
-//     printf("%s",n->value.str);
-//     struct node *left, *right;
-//     left = n->value.pair.left;
-//     right = n->value.pair.right;
-//     print_ast(left, indent + 2);
-//     print_ast(right, indent);
-// }
+void print_ast(node_T* n, int indent)
+{
+    if(n == NULL){
+        return;
+    }
+    if(indent > 0){
+        char space[indent+1];
+        memset(space, ' ', indent * sizeof(char));
+        memset(space+indent, '\0', sizeof(char));
+        printf("%s", space);
+    }
+    printf("%s", n->token->value);//printf("%s",n->value.str);
+    print_ast(n->left, indent + 2);
+    print_ast(n->right, indent);
+}
