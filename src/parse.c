@@ -5,6 +5,9 @@
 #include <stdlib.h>
 
 #include "parse.h"
+
+
+
 /*
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
@@ -64,7 +67,7 @@ int is_primary_expression(lexer_T lexer, node_T* my_node)
     {
         if(is_expression(lexer, my_node))
         {
-            if(lexer_next_token(&lexer)->type == R_PARENTHESIS)
+            if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
             {
                 return true;
             }
@@ -93,39 +96,39 @@ int is_postfix_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_postfix_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_BRACKET &&
+             lexer_peek_next_token(&lexer, 0)->type == L_BRACKET &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACKET)
     {
         return true;
     }
     else if (is_postfix_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
     else if (is_postfix_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_argument_expression_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
     else if (is_postfix_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == PERIOD &&
-             lexer_next_token(&lexer)->type == IDENTIFIER)
+             lexer_peek_next_token(&lexer, 0)->type == PERIOD &&
+             lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
     else if (is_postfix_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == PTR_OP &&
-             lexer_next_token(&lexer)->type == IDENTIFIER)
+             lexer_peek_next_token(&lexer, 0)->type == PTR_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
     else if (is_postfix_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == INC_OP)
+             lexer_peek_next_token(&lexer, 0)->type == INC_OP)
     {
         return true;
     }
@@ -163,7 +166,7 @@ int is_argument_expression_list(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_argument_expression_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
              is_assignment_expression(lexer, my_node))
     {
         return true;
@@ -190,12 +193,12 @@ int is_unary_expression(lexer_T lexer, node_T* my_node)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == INC_OP &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == INC_OP &&
              is_unary_expression(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == DEC_OP &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == DEC_OP &&
              is_unary_expression(lexer, my_node))
     {
         return true;
@@ -205,15 +208,15 @@ int is_unary_expression(lexer_T lexer, node_T* my_node)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == SIZEOF &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == SIZEOF &&
              is_unary_expression(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == SIZEOF &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == SIZEOF &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_type_name(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
@@ -235,27 +238,27 @@ unary_operator
 */
 int is_unary_operator(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == AMPERSAND)
+    if (lexer_peek_next_token(&lexer, 0)->type == AMPERSAND)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == MULTIPLY)
+    else if (lexer_peek_next_token(&lexer, 0)->type == MULTIPLY)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == PLUS)
+    else if (lexer_peek_next_token(&lexer, 0)->type == PLUS)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == MINUS)
+    else if (lexer_peek_next_token(&lexer, 0)->type == MINUS)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == TILDE)
+    else if (lexer_peek_next_token(&lexer, 0)->type == TILDE)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == EXCLAMATION_MARK)
+    else if (lexer_peek_next_token(&lexer, 0)->type == EXCLAMATION_MARK)
     {
         return true;
     }
@@ -277,9 +280,9 @@ int is_cast_expression(lexer_T lexer, node_T* my_node)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_type_name(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_cast_expression(lexer, my_node))
     {
         return true;
@@ -305,19 +308,19 @@ int is_multiplicative_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_multiplicative_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == MULTIPLY &&
+             lexer_peek_next_token(&lexer, 0)->type == MULTIPLY &&
              is_cast_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_multiplicative_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == DIVIDE &&
+             lexer_peek_next_token(&lexer, 0)->type == DIVIDE &&
              is_cast_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_multiplicative_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == PERCENT &&
+             lexer_peek_next_token(&lexer, 0)->type == PERCENT &&
              is_cast_expression(lexer, my_node))
     {
         return true;
@@ -342,13 +345,13 @@ int is_additive_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_additive_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == PLUS &&
+             lexer_peek_next_token(&lexer, 0)->type == PLUS &&
              is_multiplicative_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_additive_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == MINUS &&
+             lexer_peek_next_token(&lexer, 0)->type == MINUS &&
              is_multiplicative_expression(lexer, my_node))
     {
         return true;
@@ -373,13 +376,13 @@ int is_shift_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_shift_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == LEFT_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == LEFT_OP &&
              is_additive_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_shift_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == RIGHT_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == RIGHT_OP &&
              is_additive_expression(lexer, my_node))
     {
         return true;
@@ -406,25 +409,25 @@ int is_relational_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_relational_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == LESS_THAN &&
+             lexer_peek_next_token(&lexer, 0)->type == LESS_THAN &&
              is_shift_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_relational_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == GREATER_THAN &&
+             lexer_peek_next_token(&lexer, 0)->type == GREATER_THAN &&
              is_shift_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_relational_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == LE_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == LE_OP &&
              is_shift_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_relational_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == GE_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == GE_OP &&
              is_shift_expression(lexer, my_node))
     {
         return true;
@@ -448,13 +451,13 @@ int is_equality_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_equality_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == EQ_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == EQ_OP &&
              is_relational_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_equality_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == NE_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == NE_OP &&
              is_relational_expression(lexer, my_node))
     {
         return true;
@@ -477,7 +480,7 @@ int is_and_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_and_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == AMPERSAND &&
+             lexer_peek_next_token(&lexer, 0)->type == AMPERSAND &&
              is_equality_expression(lexer, my_node))
     {
         return true;
@@ -500,7 +503,7 @@ int is_exclusive_or_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_exclusive_or_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == CARET &&
+             lexer_peek_next_token(&lexer, 0)->type == CARET &&
              is_and_expression(lexer, my_node))
     {
         return true;
@@ -524,7 +527,7 @@ int is_inclusive_or_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_inclusive_or_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == VERTICAL_BAR &&
+             lexer_peek_next_token(&lexer, 0)->type == VERTICAL_BAR &&
              is_exclusive_or_expression(lexer, my_node))
     {
         return true;
@@ -547,7 +550,7 @@ int is_logical_and_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_logical_and_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == AND_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == AND_OP &&
              is_inclusive_or_expression(lexer, my_node))
     {
         return true;
@@ -570,7 +573,7 @@ int is_logical_or_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_logical_or_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == OR_OP &&
+             lexer_peek_next_token(&lexer, 0)->type == OR_OP &&
              is_logical_and_expression(lexer, my_node))
     {
         return false;
@@ -593,9 +596,9 @@ int is_conditional_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_logical_or_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == QUESTION_MARK &&
+             lexer_peek_next_token(&lexer, 0)->type == QUESTION_MARK &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COLON &&
+             lexer_peek_next_token(&lexer, 0)->type == COLON &&
              is_conditional_expression(lexer, my_node))
     {
         return true;
@@ -645,47 +648,47 @@ assignment_operator
 */
 int is_assignment_operator(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == EQUALS)
+    if (lexer_peek_next_token(&lexer, 0)->type == EQUALS)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == MUL_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == MUL_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == DIV_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == DIV_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == MOD_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == MOD_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == ADD_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == ADD_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == SUB_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == SUB_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == LEFT_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == LEFT_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == RIGHT_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == RIGHT_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == AND_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == AND_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == XOR_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == XOR_ASSIGN)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == OR_ASSIGN)
+    else if (lexer_peek_next_token(&lexer, 0)->type == OR_ASSIGN)
     {
         return true;
     }
@@ -707,7 +710,7 @@ int is_expression(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
              is_assignment_expression(lexer, my_node))
     {
         return true;
@@ -742,13 +745,13 @@ declaration
 int is_declaration(lexer_T lexer, node_T* my_node)
 {
     if (is_declaration_specifiers(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == SEMICOLON)
+        lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
     else if (is_declaration_specifiers(lexer, my_node) &&
              is_init_declarator_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
@@ -770,37 +773,66 @@ declaration_specifiers
 */
 int is_declaration_specifiers(lexer_T lexer, node_T* my_node)
 {
-    if (is_storage_class_specifier(lexer, my_node))
+    if(is_storage_class_specifier(lexer, my_node))
     {
-        return true;
-    }
-    else if (is_storage_class_specifier(lexer, my_node) &&
-             is_declaration_specifiers(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_type_specifier(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_type_specifier(lexer, my_node) &&
-             is_declaration_specifiers(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_type_qualifier(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_type_qualifier(lexer, my_node) &&
-             is_declaration_specifiers(lexer, my_node))
-    {
-        return true;
-    }
-    else
-    {
+        lexer_next_token(&lexer);
+        if(is_declaration_specifiers(lexer, my_node))
+        {
+            return true;
+        }else{
+            return true;
+        }
+    } else if(is_type_specifier(lexer, my_node)){
+        lexer_next_token(&lexer);
+        if(is_declaration_specifiers(lexer, my_node))
+        {
+            return true;
+        }else{
+            return true;
+        }
+    }else if(is_storage_class_specifier(lexer, my_node)){
+        lexer_next_token(&lexer);
+        if(is_declaration_specifiers(lexer, my_node))
+        {
+            return true;
+        }else{
+            return true;
+        }
+    }else{
         return false;
     }
+    //end
+    // if ()
+    // {
+    //     return true;
+    // }
+    // else if (is_storage_class_specifier(lexer, my_node) &&
+    //          is_declaration_specifiers(lexer, my_node))
+    // {
+    //     return true;
+    // }
+    // else if (is_type_specifier(lexer, my_node))
+    // {
+    //     return true;
+    // }
+    // else if (is_type_specifier(lexer, my_node) &&
+    //          is_declaration_specifiers(lexer, my_node))
+    // {
+    //     return true;
+    // }
+    // else if (is_type_qualifier(lexer, my_node))
+    // {
+    //     return true;
+    // }
+    // else if (is_type_qualifier(lexer, my_node) &&
+    //          is_declaration_specifiers(lexer, my_node))
+    // {
+    //     return true;
+    // }
+    // else
+    // {
+    //     return false;
+    // }
 }
 /*
 init_declarator_list
@@ -819,7 +851,7 @@ int is_init_declarator_list(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (p_is_init_declarator_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
              is_init_declarator(lexer, my_node))
     {
         return true;
@@ -842,7 +874,7 @@ int is_init_declarator(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (is_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == EQUALS &&
+             lexer_peek_next_token(&lexer, 0)->type == EQUALS &&
              is_initializer(lexer, my_node))
     {
         return true;
@@ -963,22 +995,22 @@ struct_or_union_specifier
 int is_struct_or_union_specifier(lexer_T lexer, node_T* my_node)
 {
     if (is_struct_or_union(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == IDENTIFIER &&
-        lexer_next_token(&lexer)->type == L_BRACE &&
+        lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER &&
+        lexer_peek_next_token(&lexer, 0)->type == L_BRACE &&
         is_struct_declaration_list(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == R_BRACE)
+        lexer_peek_next_token(&lexer, 0)->type == R_BRACE)
     {
         return true;
     }
     else if (is_struct_or_union(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_BRACE &&
+             lexer_peek_next_token(&lexer, 0)->type == L_BRACE &&
              is_struct_declaration_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACE)
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACE)
     {
         return true;
     }
     else if (is_struct_or_union(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == IDENTIFIER)
+             lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
@@ -995,11 +1027,11 @@ struct_or_union
 */
 int is_struct_or_union(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == STRUCT)
+    if (lexer_peek_next_token(&lexer, 0)->type == STRUCT)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == UNION)
+    else if (lexer_peek_next_token(&lexer, 0)->type == UNION)
     {
         return true;
     }
@@ -1043,7 +1075,7 @@ int is_struct_declaration(lexer_T lexer, node_T* my_node)
 {
     if (is_specifier_qualifier_list(lexer, my_node) &&
         is_struct_declarator_list(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == SEMICOLON)
+        lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
@@ -1106,7 +1138,7 @@ int is_struct_declarator_list(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (p_is_struct_declarator_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
              is_struct_declarator(lexer, my_node))
     {
         return true;
@@ -1129,13 +1161,13 @@ int is_struct_declarator(lexer_T lexer, node_T* my_node)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == COLON &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == COLON &&
              is_constant_expression(lexer, my_node))
     {
         return true;
     }
     else if (is_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COLON &&
+             lexer_peek_next_token(&lexer, 0)->type == COLON &&
              is_constant_expression(lexer, my_node))
     {
         return true;
@@ -1154,23 +1186,23 @@ enum_specifier
 */
 int is_enum_specifier(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == ENUM &&
-        lexer_next_token(&lexer)->type == L_BRACE &&
+    if (lexer_peek_next_token(&lexer, 0)->type == ENUM &&
+        lexer_peek_next_token(&lexer, 0)->type == L_BRACE &&
         is_enumerator_list(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == R_BRACE)
+        lexer_peek_next_token(&lexer, 0)->type == R_BRACE)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == ENUM &&
-             lexer_next_token(&lexer)->type == IDENTIFIER &&
-             lexer_next_token(&lexer)->type == L_BRACE &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == ENUM &&
+             lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER &&
+             lexer_peek_next_token(&lexer, 0)->type == L_BRACE &&
              is_enumerator_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACE)
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACE)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == ENUM &&
-             lexer_next_token(&lexer)->type == IDENTIFIER)
+    else if (lexer_peek_next_token(&lexer, 0)->type == ENUM &&
+             lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
@@ -1196,7 +1228,7 @@ int is_enumerator_list(lexer_T lexer, node_T* my_node)
         return true;
     }
     if (p_is_enumerator_list(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == COMMA &&
+        lexer_peek_next_token(&lexer, 0)->type == COMMA &&
         is_enumerator(lexer, my_node))
     {
         return true;
@@ -1214,12 +1246,12 @@ enumerator
 */
 int is_enumerator(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == IDENTIFIER)
+    if (lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == IDENTIFIER &&
-             lexer_next_token(&lexer)->type == EQUALS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER &&
+             lexer_peek_next_token(&lexer, 0)->type == EQUALS &&
              is_constant_expression(lexer, my_node))
     {
         return true;
@@ -1237,11 +1269,11 @@ type_qualifier
 */
 int is_type_qualifier(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == CONST)
+    if (lexer_peek_next_token(&lexer, 0)->type == CONST)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == VOLATILE)
+    else if (lexer_peek_next_token(&lexer, 0)->type == VOLATILE)
     {
         return true;
     }
@@ -1258,19 +1290,15 @@ declarator
 */
 int is_declarator(lexer_T lexer, node_T* my_node)
 {
-    if (is_pointer(lexer, my_node) &&
-        is_direct_declarator(lexer, my_node))
-    {
+    if(is_pointer(lexer, my_node)){
+        lexer_next_token(&lexer);
+        if(is_direct_declarator(lexer, my_node)){
+            return true;
+        }
+    }else if(is_direct_declarator(lexer, my_node)){
         return true;
     }
-    else if (is_direct_declarator(lexer, my_node))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 /*
 direct_declarator
@@ -1285,53 +1313,62 @@ direct_declarator
 */
 int is_direct_declarator(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == IDENTIFIER)
-    {
+    if(lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER){
+        lexer_next_token(&lexer);
+        if(is_direct_declarator_prime(lexer, my_node)){
+            return true;
+        }
         return true;
+    }else if(lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS){
+        lexer_next_token(&lexer);
+        if(is_declarator(lexer, my_node)){
+            return true;
+        }
+    }else if(is_direct_declarator_prime(lexer, my_node)){
+        lexer_next_token(&lexer);
+        if(lexer_peek_next_token(&lexer, 0)->type == L_BRACKET){
+            lexer_next_token(&lexer);
+            if(is_constant_expression(lexer, my_node)){
+                lexer_next_token(&lexer);
+                if(lexer_peek_next_token(&lexer, 0)->type == R_BRACKET){
+                    lexer_next_token(&lexer);
+                    return true;
+                }else{
+                    return false;
+                }
+            }else if(lexer_peek_next_token(&lexer, 0)->type == R_BRACKET){
+                lexer_next_token(&lexer);
+                return true;
+            }else{
+                return false;
+            }
+        }else if(lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS){
+            lexer_next_token(&lexer);
+            if(is_parameter_type_list(lexer, my_node)){
+                lexer_next_token(&lexer);
+                if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS){
+                    lexer_next_token(&lexer);
+                    return true;
+                }else{
+                    return false;
+                }
+            }else if(is_identifier_list(lexer, my_node)){
+                lexer_next_token(&lexer);
+                if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS){
+                    lexer_next_token(&lexer);
+                    return true;
+                }else{
+                    return false;
+                }
+            }else if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS){
+                lexer_next_token(&lexer);
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return false;
-    }
-    else if (is_direct_declarator_prime(lexer, my_node) && // FIXME Infinite recursion
-             lexer_next_token(&lexer)->type == L_BRACKET &&
-             is_constant_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
-    {
-        return true;
-    }
-    else if (is_direct_declarator_prime(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_BRACKET &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
-    {
-        return true;
-    }
-    else if (is_direct_declarator_prime(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_parameter_type_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
-    }
-    else if (is_direct_declarator_prime(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_identifier_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
-    }
-    else if (is_direct_declarator_prime(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 int is_direct_declarator_prime(lexer_T lexer, node_T* my_node)
@@ -1345,20 +1382,39 @@ int is_direct_declarator_prime(lexer_T lexer, node_T* my_node)
     // | direct_declarator '(' identifier_list ')'
     // | direct_declarator '(' ')'
     // ;
-    if (lexer_next_token(&lexer)->type == IDENTIFIER)
-    {
-        return true;
+
+    if(lexer_peek_next_token(&lexer, 0)->type == L_BRACKET){
+        lexer_next_token(&lexer);
+        if(is_constant_expression(lexer, my_node)){
+            lexer_next_token(&lexer);
+            if(lexer_peek_next_token(&lexer, 0)->type == R_BRACKET){
+                lexer_next_token(&lexer);
+                return true;
+            }
+        }else if(lexer_peek_next_token(&lexer, 0)->type == R_BRACKET){
+            lexer_next_token(&lexer);
+            return true;
+        }
+    }else if(lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS){
+        lexer_next_token(&lexer);
+        if(is_parameter_type_list(lexer, my_node)){
+            lexer_next_token(&lexer);
+            if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS){
+                lexer_next_token(&lexer);
+                return true;
+            }
+        }else if(is_identifier_list(lexer, my_node)){
+            lexer_next_token(&lexer);
+            if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS){
+                lexer_next_token(&lexer);
+                return true;
+            }
+        }if(lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS){
+            lexer_next_token(&lexer);
+            return true;
+        }
     }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return false;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 /*
@@ -1369,32 +1425,47 @@ pointer
     | '*' type_qualifier_list pointer
     ;
 */
+int p_is_pointer(lexer_T lexer, node_T* my_node)
+{
+    if (lexer_peek_next_token(&lexer, 0)->type == MULTIPLY)
+    {
+        lexer_next_token(&lexer);
+        if(is_type_qualifier_list(lexer, my_node))
+        {
+            lexer_next_token(&lexer);
+            return true;
+            
+        }else{
+            return true;
+        }
+    }
+    return false;
+}
 int is_pointer(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == MULTIPLY)
+    if (lexer_peek_next_token(&lexer, 0)->type == MULTIPLY)
     {
-        return true;
+        lexer_next_token(&lexer);
+        if(is_type_qualifier_list(lexer, my_node))
+        {
+            lexer_next_token(&lexer);
+            if(p_is_pointer(lexer, my_node))
+            {
+                lexer_next_token(&lexer);
+                return true;
+            }else{
+                return true;
+            }
+            
+        }else if(p_is_pointer(lexer, my_node))
+        {
+            lexer_next_token(&lexer);
+            return true;
+        }else{
+            return true;
+        }
     }
-    else if (lexer_next_token(&lexer)->type == MULTIPLY &&
-             is_type_qualifier_list(lexer, my_node))
-    {
-        return true;
-    }
-    else if (lexer_next_token(&lexer)->type == MULTIPLY &&
-             is_pointer(lexer, my_node))
-    {
-        return true;
-    }
-    else if (lexer_next_token(&lexer)->type == MULTIPLY &&
-             is_type_qualifier_list(lexer, my_node) &&
-             is_pointer(lexer, my_node))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 /*
 type_qualifier_list
@@ -1405,7 +1476,12 @@ type_qualifier_list
 */
 int p_is_type_qualifier_list(lexer_T lexer, node_T* my_node)
 {
-    return false; // implement p_is_type_qualifier_list
+    if(is_type_qualifier(lexer, my_node))
+    {
+        lexer_next_token(&lexer);
+        return true;
+    }
+    return false;
 }
 int is_type_qualifier_list(lexer_T lexer, node_T* my_node)
 {
@@ -1433,18 +1509,23 @@ int is_parameter_type_list(lexer_T lexer, node_T* my_node)
 {
     if (is_parameter_list(lexer, my_node))
     {
+        lexer_next_token(&lexer);
         return true;
     }
-    else if (is_parameter_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
-             lexer_next_token(&lexer)->type == ELLIPSIS)
+    else if (is_parameter_list(lexer, my_node))
     {
-        return true;
+        lexer_next_token(&lexer);
+        if(lexer_peek_next_token(&lexer, 0)->type == COMMA)
+        {
+            lexer_next_token(&lexer);
+            if(lexer_peek_next_token(&lexer, 0)->type == ELLIPSIS)
+            {
+                lexer_next_token(&lexer);
+                return true;
+            }
+        }
     }
-    else
-    {
-        return true;
-    }
+    return false;
 }
 /*
 parameter_list
@@ -1463,7 +1544,7 @@ int is_parameter_list(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (p_is_parameter_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
              is_parameter_declaration(lexer, my_node))
     {
         return true;
@@ -1513,13 +1594,13 @@ int p_is_identifier_list(lexer_T lexer, node_T* my_node)
 }
 int is_identifier_list(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == IDENTIFIER)
+    if (lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
     else if (p_is_identifier_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
-             lexer_next_token(&lexer)->type == IDENTIFIER)
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER)
     {
         return true;
     }
@@ -1592,57 +1673,57 @@ direct_abstract_declarator
 */
 int is_direct_abstract_declarator(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    if (lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
         is_abstract_declarator(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == R_PARENTHESIS)
+        lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_BRACKET &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_BRACKET &&
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACKET)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_BRACKET &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_BRACKET &&
              is_constant_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACKET)
     {
         return true;
     }
     else if (is_direct_abstract_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_BRACKET &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
+             lexer_peek_next_token(&lexer, 0)->type == L_BRACKET &&
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACKET)
     {
         return true;
     }
     else if (is_direct_abstract_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_BRACKET &&
+             lexer_peek_next_token(&lexer, 0)->type == L_BRACKET &&
              is_constant_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACKET)
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACKET)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_parameter_type_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
     else if (is_direct_abstract_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
     else if (is_direct_abstract_declarator(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_parameter_type_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS)
     {
         return true;
     }
@@ -1664,16 +1745,16 @@ int is_initializer(lexer_T lexer, node_T* my_node)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_BRACE &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_BRACE &&
              is_initializer_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_BRACE)
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACE)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == L_BRACE &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == L_BRACE &&
              is_initializer_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
-             lexer_next_token(&lexer)->type == R_BRACE)
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == R_BRACE)
     {
         return true;
     }
@@ -1699,7 +1780,7 @@ int is_initializer_list(lexer_T lexer, node_T* my_node)
         return true;
     }
     else if (p_is_initializer_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COMMA &&
+             lexer_peek_next_token(&lexer, 0)->type == COMMA &&
              is_initializer(lexer, my_node))
     {
         return true;
@@ -1759,21 +1840,21 @@ labeled_statement
 */
 int is_labeled_statement(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == IDENTIFIER &&
-        lexer_next_token(&lexer)->type == COLON &&
+    if (lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER &&
+        lexer_peek_next_token(&lexer, 0)->type == COLON &&
         is_statement(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == CASE &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == CASE &&
              is_conditional_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == COLON &&
+             lexer_peek_next_token(&lexer, 0)->type == COLON &&
              is_statement(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == DEFAULT &&
-             lexer_next_token(&lexer)->type == COLON &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == DEFAULT &&
+             lexer_peek_next_token(&lexer, 0)->type == COLON &&
              is_statement(lexer, my_node))
     {
         return true;
@@ -1793,34 +1874,24 @@ compound_statement
 */
 int is_compound_statement(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-        lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
+    if(lexer_peek_next_token(&lexer, 0)->type == L_BRACE){
+        if(is_statement_list(lexer, my_node)){
+            if(lexer_peek_next_token(&lexer, 0)->type == R_BRACE){
+                return true;
+            }
+        }else if(is_declaration_list(lexer, my_node)){
+            if(is_statement_list(lexer, my_node)){
+                if(lexer_peek_next_token(&lexer, 0)->type == R_BRACE){
+                    return true;
+                }
+            }else if(lexer_peek_next_token(&lexer, 0)->type == R_BRACE){
+                return true;
+            }
+        }else if(lexer_peek_next_token(&lexer, 0)->type == R_BRACE){
+            return true;
+        }
     }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_statement_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
-    }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_declaration_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
-    }
-    else if (lexer_next_token(&lexer)->type == L_PARENTHESIS &&
-             is_declaration_list(lexer, my_node) &&
-             is_statement_list(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 /*
 declaration_list
@@ -1830,7 +1901,11 @@ declaration_list
 */
 int p_is_declaration_list(lexer_T lexer, node_T* my_node)
 {
-    return false; // TODO implement is declation list
+    if (is_declaration(lexer, my_node))
+    {
+        return true;
+    }
+    return false;
 }
 int is_declaration_list(lexer_T lexer, node_T* my_node)
 {
@@ -1882,12 +1957,12 @@ expression_statement
 */
 int is_expression_statement(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == SEMICOLON)
+    if (lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
     else if (is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
@@ -1905,28 +1980,28 @@ selection_statement
 */
 int is_selection_statement(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == IF &&
-        lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    if (lexer_peek_next_token(&lexer, 0)->type == IF &&
+        lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
         is_expression(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == R_PARENTHESIS &&
+        lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
         is_statement(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == IF &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == IF &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
              is_statement(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == ELSE &&
+             lexer_peek_next_token(&lexer, 0)->type == ELSE &&
              is_statement(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == SWITCH &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == SWITCH &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
              is_statement(lexer, my_node))
     {
         return true;
@@ -1946,39 +2021,39 @@ iteration_statement
 */
 int is_iteration_statement(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == WHILE &&
-        lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    if (lexer_peek_next_token(&lexer, 0)->type == WHILE &&
+        lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
         is_expression(lexer, my_node) &&
-        lexer_next_token(&lexer)->type == R_PARENTHESIS &&
+        lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
         is_statement(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == DO &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == DO &&
              is_statement(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == WHILE &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == WHILE &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == FOR &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == FOR &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_expression_statement(lexer, my_node) &&
              is_expression_statement(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
              is_statement(lexer, my_node))
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == FOR &&
-             lexer_next_token(&lexer)->type == L_PARENTHESIS &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == FOR &&
+             lexer_peek_next_token(&lexer, 0)->type == L_PARENTHESIS &&
              is_expression_statement(lexer, my_node) &&
              is_expression_statement(lexer, my_node) &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == R_PARENTHESIS &&
+             lexer_peek_next_token(&lexer, 0)->type == R_PARENTHESIS &&
              is_statement(lexer, my_node))
     {
         return true;
@@ -1999,31 +2074,31 @@ jump_statement
 */
 int is_jump_statement(lexer_T lexer, node_T* my_node)
 {
-    if (lexer_next_token(&lexer)->type == GOTO &&
-        lexer_next_token(&lexer)->type == IDENTIFIER &&
-        lexer_next_token(&lexer)->type == SEMICOLON)
+    if (lexer_peek_next_token(&lexer, 0)->type == GOTO &&
+        lexer_peek_next_token(&lexer, 0)->type == IDENTIFIER &&
+        lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
 
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == CONTINUE &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+    else if (lexer_peek_next_token(&lexer, 0)->type == CONTINUE &&
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == BREAK &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+    else if (lexer_peek_next_token(&lexer, 0)->type == BREAK &&
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == RETURN &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+    else if (lexer_peek_next_token(&lexer, 0)->type == RETURN &&
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
     {
         return true;
     }
-    else if (lexer_next_token(&lexer)->type == RETURN &&
+    else if (lexer_peek_next_token(&lexer, 0)->type == RETURN &&
              is_expression(lexer, my_node) &&
-             lexer_next_token(&lexer)->type == SEMICOLON)
+             lexer_peek_next_token(&lexer, 0)->type == SEMICOLON)
 
     {
         return true;
@@ -2086,32 +2161,37 @@ function_definition
 */
 int is_function_definition(lexer_T lexer, node_T* my_node)
 {
-    if (is_declaration_specifiers(lexer, my_node) &&
-        is_declarator(lexer, my_node) &&
-        is_declaration_list(lexer, my_node) &&
-        is_compound_statement(lexer, my_node))
-    {
-        return true;
+    if(is_declaration_specifiers(lexer, my_node)){
+        lexer_next_token(&lexer);
+        if(is_declarator(lexer, my_node)){
+            lexer_next_token(&lexer);
+            if(is_declaration_list(lexer, my_node)){
+                lexer_next_token(&lexer);
+                if(is_compound_statement(lexer, my_node)){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else if (is_compound_statement(lexer, my_node))
+            {
+                return true;
+            }
+        }
     }
-    else if (is_declaration_specifiers(lexer, my_node) &&
-             is_declarator(lexer, my_node) &&
-             is_compound_statement(lexer, my_node))
-    {
-        return true; // HIT
+    else if(is_declarator(lexer, my_node)){
+        lexer_next_token(&lexer);
+        if(is_declaration_list(lexer, my_node)){
+            lexer_next_token(&lexer);
+            if(is_compound_statement(lexer, my_node)){
+                return true;
+            }else{
+                return false;
+            }
+        }else if(is_compound_statement(lexer, my_node)){
+            return true;
+        }else{
+            return false;
+        }
     }
-    else if (is_declarator(lexer, my_node) &&
-             is_declaration_list(lexer, my_node) &&
-             is_compound_statement(lexer, my_node))
-    {
-        return true;
-    }
-    else if (is_declarator(lexer, my_node) &&
-             is_compound_statement(lexer, my_node))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return false;
 }

@@ -269,6 +269,8 @@ token_T *lexer_next_token(lexer_T *lexer)
     return init_token(0, END_OF_FILE);
 }
 
+
+
 /*
     lexer_peek_next_token
 
