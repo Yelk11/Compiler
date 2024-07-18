@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
 
     node_T* root = NULL;
-    printf("Parse: %d\n",parse(*lexer, root));
+    printf("Parse: %d\n",parse(lexer, root));
     print_ast(root, 10);
     free(buffer);
     return 0;
