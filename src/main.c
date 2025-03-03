@@ -50,17 +50,6 @@ int main(int argc, char *argv[])
 
     lexer = init_lexer(buffer);
 
-    // token_T *token;
-    // while (1)
-    // {
-    //     token = lexer_next_token(lexer);
-    //     printf("%s : %s\n", type_to_string(token->type), token->value);
-    //     if (token->type == END_OF_FILE)
-    //     {
-    //         break;
-    //     }
-    // }
-
 
     node_T* root = NULL;
     printf("Parse: %d\n",parse(lexer, root));
