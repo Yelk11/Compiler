@@ -1,10 +1,8 @@
 
 
-I getting back to this after a while. I think i was getting rid of left hand recursion? in parse.c
+I am trying to implement the AST.
 
-
-
-
+I need to pass a token not the enum to the AST functions
 
 
 

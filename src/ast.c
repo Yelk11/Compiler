@@ -26,12 +26,21 @@ node_T *init_node(n_type type, token_T* token)
 node_T* node_expression(node_T* parent, token_T* token)
 {
     node_T* node = init_node(EXPRESSION_NODE, token);
-    if(parent->left == NULL)
+    if(parent != NULL)
     {
-        parent->left = node;
-    }else{
-        parent->right = node;
+        if(parent->left == NULL)
+        {
+            parent->left = node;
+        }else{
+            parent->right = node;
+        }
     }
+    else
+    {
+        /* root node */
+        return node;
+    }
+    
     return node;
 }
 node_T* node_statement(node_T* parent, token_T* token)

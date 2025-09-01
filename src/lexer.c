@@ -31,6 +31,7 @@ token_T *lexer_next_token(lexer_T *lexer)
 {
     lexer_skip_whitespace(lexer);
     lexer_skip_comment(lexer);
+    char *value = calloc(1, sizeof(char));
 
     while (lexer->i <= strlen(lexer->src))
     {
@@ -255,7 +256,7 @@ token_T *lexer_next_token(lexer_T *lexer)
         case '\'':
             return lexer_parse_constant(lexer);
         case '\0': // EOF
-            return init_token(0, END_OF_FILE);
+            return init_token(value, END_OF_FILE);
         case '\xff':
             break;
         default:
@@ -266,7 +267,7 @@ token_T *lexer_next_token(lexer_T *lexer)
 
         lexer_advance(lexer);
     }
-    return init_token(0, END_OF_FILE);
+    return init_token(value, END_OF_FILE);
 }
 
 
