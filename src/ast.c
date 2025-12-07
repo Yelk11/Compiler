@@ -88,6 +88,66 @@ node_T* node_control_flow(node_T* parent, token_T* token)
     return node;
 }
 
+node_T* node_operator(node_T* parent, token_T* token)
+{
+    node_T* node = init_node(OPERATOR_NODE, token);
+    if(parent != NULL)
+    {
+        if(parent->left == NULL)
+        {
+            parent->left = node;
+        }else{
+            parent->right = node;
+        }
+    }
+    return node;
+}
+
+node_T* node_function_call(node_T* parent, token_T* token)
+{
+    node_T* node = init_node(FUNCTION_CALL_NODE, token);
+    if(parent != NULL)
+    {
+        if(parent->left == NULL)
+        {
+            parent->left = node;
+        }else{
+            parent->right = node;
+        }
+    }
+    return node;
+}
+
+node_T* node_identifier(node_T* parent, token_T* token)
+{
+    node_T* node = init_node(IDENTIFIER_NODE, token);
+    if(parent != NULL)
+    {
+        if(parent->left == NULL)
+        {
+            parent->left = node;
+        }else{
+            parent->right = node;
+        }
+    }
+    return node;
+}
+
+node_T* node_literal(node_T* parent, token_T* token)
+{
+    node_T* node = init_node(LITERAL_NODE, token);
+    if(parent != NULL)
+    {
+        if(parent->left == NULL)
+        {
+            parent->left = node;
+        }else{
+            parent->right = node;
+        }
+    }
+    return node;
+}
+
 void print_ast(node_T* n, int indent)
 {
     if(n == NULL){

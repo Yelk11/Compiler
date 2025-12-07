@@ -95,6 +95,13 @@ typedef enum node_type
         While, DoWhile, For.
     */
     CONTROL_FLOW_NODE,
+    /*
+    New finer-grained node kinds for clearer semantics
+    */
+    OPERATOR_NODE,
+    FUNCTION_CALL_NODE,
+    IDENTIFIER_NODE,
+    LITERAL_NODE,
 
 } n_type;
 
@@ -141,6 +148,10 @@ node_T* node_statement(node_T* parent, token_T* token);
 node_T* node_declaration(node_T* parent, token_T* token);
 node_T* node_type(node_T* parent, token_T* token);
 node_T* node_control_flow(node_T* parent, token_T* token);
+node_T* node_operator(node_T* parent, token_T* token);
+node_T* node_function_call(node_T* parent, token_T* token);
+node_T* node_identifier(node_T* parent, token_T* token);
+node_T* node_literal(node_T* parent, token_T* token);
 
 void print_ast(node_T* n, int indent);
 #endif

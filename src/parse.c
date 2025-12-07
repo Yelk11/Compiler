@@ -25,16 +25,17 @@
 %%
 */
 
-int parse(lexer_T* lexer, node_T* my_node)
+node_T* parse(lexer_T* lexer)
 {
-    if (is_function_definition(lexer, my_node))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    /* create a root node for the AST and let existing parsing
+       functions attach children to it */
+    node_T *root = init_node(STATEMENT_NODE, init_token("<ROOT>", 0));
+
+    /* start parsing from the top-level; existing functions expect
+       a parent node pointer to attach to */
+    (void)is_function_definition(lexer, root);
+
+    return root;
 }
 
 /*
@@ -61,17 +62,17 @@ int is_primary_expression(lexer_T* lexer, node_T* my_node)
     }else if (lexer_peek_next_token(lexer,0)->type == STRING_LITERAL)
     {
         token_T* token = lexer_next_token(lexer);
-        node_expression(my_node, token);
+        node_literal(my_node, token);
         return true;
     }else if (lexer_peek_next_token(lexer,0)->type == CONSTANT)
     {
         token_T* token = lexer_next_token(lexer);
-        node_expression(my_node, token);
+        node_literal(my_node, token);
         return true;
     }else if (lexer_peek_next_token(lexer,0)->type == IDENTIFIER)
     {
         token_T* token = lexer_next_token(lexer);
-        node_expression(my_node, token);
+        node_identifier(my_node, token);
         return true;
     } 
    return false;
@@ -109,25 +110,25 @@ int p_is_postfix_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == DEC_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(p_is_postfix_expression(lexer,my_node))
         {
             return true;
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == INC_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(p_is_postfix_expression(lexer,my_node))
         {
             return true;
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == PTR_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
         {
             token_T* token = lexer_next_token(lexer);
-            node_expression(my_node, token);
+            node_identifier(my_node, token);
             if(p_is_postfix_expression(lexer,my_node))
             {
                 return true;
@@ -135,11 +136,11 @@ int p_is_postfix_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == PERIOD)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
         {
             token_T* token = lexer_next_token(lexer);
-            node_expression(my_node, token);
+            node_identifier(my_node, token);
             if(p_is_postfix_expression(lexer,my_node))
             {
                 return true;
@@ -173,7 +174,7 @@ int p_is_postfix_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == L_BRACKET)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_expression(lexer, my_node))
         {
             if(p_is_postfix_expression(lexer, my_node))
@@ -391,6 +392,7 @@ int p_is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == PERCENT)
     {
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_cast_expression(lexer, my_node))
         {
             if(p_is_multiplicative_expression(lexer, my_node))
@@ -400,6 +402,7 @@ int p_is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == DIVIDE)
     {
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_cast_expression(lexer, my_node))
         {
             if(p_is_multiplicative_expression(lexer, my_node))
@@ -409,6 +412,7 @@ int p_is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == MULTIPLY)
     {
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_cast_expression(lexer, my_node))
         {
             if(p_is_multiplicative_expression(lexer, my_node))
@@ -435,14 +439,6 @@ int is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
 
 /*
 additive_expression
-    : multiplicative_expression
-    | additive_expression '+' multiplicative_expression
-    | additive_expression '-' multiplicative_expression
-    ;
-*/
-
-/*
-additive_expression
     : multiplicative_expression p_additive_expression
     ;
 p_additive_expression
@@ -455,7 +451,7 @@ int p_is_additive_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == MINUS)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_multiplicative_expression(lexer, my_node))
         {
             if(p_is_additive_expression(lexer, my_node))
@@ -465,7 +461,7 @@ int p_is_additive_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == PLUS)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_multiplicative_expression(lexer, my_node))
         {
             if(p_is_additive_expression(lexer, my_node))
@@ -510,6 +506,7 @@ int p_is_shift_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == RIGHT_OP)
     {
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_additive_expression(lexer, my_node))
         {
             if(p_is_shift_expression(lexer, my_node))
@@ -519,6 +516,7 @@ int p_is_shift_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == LEFT_OP)
     {
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_additive_expression(lexer, my_node))
         {
             if(p_is_shift_expression(lexer, my_node))
@@ -568,7 +566,7 @@ int p_is_relational_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == GE_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_shift_expression(lexer, my_node))
         {
             if(p_is_relational_expression(lexer, my_node))
@@ -578,7 +576,7 @@ int p_is_relational_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == LE_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_shift_expression(lexer, my_node))
         {
             if(p_is_relational_expression(lexer, my_node))
@@ -589,7 +587,7 @@ int p_is_relational_expression(lexer_T* lexer, node_T* my_node)
     }else 
     if(lexer_peek_next_token(lexer, 0)->type == GREATER_THAN)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_shift_expression(lexer, my_node))
         {
             if(p_is_relational_expression(lexer, my_node))
@@ -599,7 +597,7 @@ int p_is_relational_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == LESS_THAN)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_shift_expression(lexer, my_node))
         {
             if(p_is_relational_expression(lexer, my_node))
@@ -644,7 +642,7 @@ int p_is_equality_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == NE_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_relational_expression(lexer, my_node))
         {
             if(p_is_equality_expression(lexer, my_node))
@@ -654,7 +652,7 @@ int p_is_equality_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == EQ_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_relational_expression(lexer, my_node))
         {
             if(p_is_equality_expression(lexer, my_node))
@@ -697,7 +695,7 @@ int p_is_and_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == AMPERSAND)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(p_is_and_expression(lexer, my_node))
         {
             return true;
@@ -737,7 +735,7 @@ int p_is_exclusive_or_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == CARET)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_and_expression(lexer, my_node))
         {
             if(p_is_exclusive_or_expression(lexer, my_node))
@@ -780,7 +778,7 @@ int p_is_inclusive_or_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == VERTICAL_BAR)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_exclusive_or_expression(lexer, my_node))
         {
             if(p_is_inclusive_or_expression(lexer, my_node))
@@ -822,7 +820,7 @@ int p_is_logical_and_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == AND_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_inclusive_or_expression(lexer, my_node))
         {
             if(p_is_logical_and_expression(lexer, my_node))
@@ -856,7 +854,7 @@ int p_is_logical_or_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == OR_OP)
     {
-        lexer_next_token(lexer);
+        node_operator(my_node, lexer_next_token(lexer));
         if(is_logical_and_expression(lexer, my_node))
         {
             if(p_is_logical_or_expression(lexer, my_node))
@@ -893,12 +891,12 @@ int is_conditional_expression(lexer_T* lexer, node_T* my_node)
     {
         if(lexer_peek_next_token(lexer, 0)->type == QUESTION_MARK)
         {
-            lexer_next_token(lexer);
+            node_control_flow(my_node, lexer_next_token(lexer));
             if(is_expression(lexer, my_node))
             {
                 if(lexer_peek_next_token(lexer, 0)->type == COLON)
                 {
-                    lexer_next_token(lexer);
+                    node_control_flow(my_node, lexer_next_token(lexer));
                     if(is_conditional_expression(lexer, my_node))
                     {
                         return true;
@@ -919,11 +917,15 @@ assignment_expression
 */
 int is_assignment_expression(lexer_T* lexer, node_T* my_node)
 {
-    
     if (is_unary_expression(lexer, my_node))
     {
-        if(is_assignment_operator(lexer, my_node))
+        /* check and consume assignment operators here and create nodes */
+        int t = lexer_peek_next_token(lexer, 0)->type;
+        if(t == EQUALS || t == MUL_ASSIGN || t == DIV_ASSIGN || t == MOD_ASSIGN ||
+           t == ADD_ASSIGN || t == SUB_ASSIGN || t == LEFT_ASSIGN || t == RIGHT_ASSIGN ||
+           t == AND_ASSIGN || t == XOR_ASSIGN || t == OR_ASSIGN)
         {
+            node_expression(my_node, lexer_next_token(lexer));
             if(is_assignment_expression(lexer, my_node))
             {
                 return true;
@@ -953,59 +955,12 @@ assignment_operator
 */
 int is_assignment_operator(lexer_T* lexer, node_T* my_node)
 {
-    if (lexer_peek_next_token(lexer, 0)->type == EQUALS)
+    int t = lexer_peek_next_token(lexer, 0)->type;
+    if (t == EQUALS || t == MUL_ASSIGN || t == DIV_ASSIGN || t == MOD_ASSIGN ||
+        t == ADD_ASSIGN || t == SUB_ASSIGN || t == LEFT_ASSIGN || t == RIGHT_ASSIGN ||
+        t == AND_ASSIGN || t == XOR_ASSIGN || t == OR_ASSIGN)
     {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == MUL_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == DIV_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == MOD_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == ADD_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == SUB_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == LEFT_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == RIGHT_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == AND_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == XOR_ASSIGN)
-    {
-        lexer_next_token(lexer);
-        return true;
-    }
-    else if (lexer_peek_next_token(lexer, 0)->type == OR_ASSIGN)
-    {
-        lexer_next_token(lexer);
+        node_expression(my_node, lexer_next_token(lexer));
         return true;
     }
     return false;
@@ -1028,7 +983,7 @@ int p_is_expression(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == COMMA)
     {
-        lexer_next_token(lexer);
+        node_expression(my_node, lexer_next_token(lexer));
         if(is_assignment_expression(lexer, my_node))
         {
             if(p_is_expression(lexer, my_node))

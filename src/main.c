@@ -51,8 +51,12 @@ int main(int argc, char *argv[])
     lexer = init_lexer(buffer);
 
 
-    node_T* root = NULL;
-    printf("Parse: %d\n",parse(lexer, root));
+    node_T* root = parse(lexer);
+    if (root == NULL) {
+        fprintf(stderr, "parse failed: returned NULL root\n");
+        free(buffer);
+        return 2;
+    }
     print_ast(root, 10);
     free(buffer);
     return 0;

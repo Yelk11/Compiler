@@ -21,7 +21,7 @@
 %%
 */
 
-int parse(lexer_T* lexer, node_T* my_node);
+node_T* parse(lexer_T* lexer);
 
 /*
 primary_expression
