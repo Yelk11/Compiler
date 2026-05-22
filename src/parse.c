@@ -925,7 +925,7 @@ int is_assignment_expression(lexer_T* lexer, node_T* my_node)
            t == ADD_ASSIGN || t == SUB_ASSIGN || t == LEFT_ASSIGN || t == RIGHT_ASSIGN ||
            t == AND_ASSIGN || t == XOR_ASSIGN || t == OR_ASSIGN)
         {
-            node_expression(my_node, lexer_next_token(lexer));
+            node_operator(my_node, lexer_next_token(lexer));
             if(is_assignment_expression(lexer, my_node))
             {
                 return true;
@@ -960,7 +960,7 @@ int is_assignment_operator(lexer_T* lexer, node_T* my_node)
         t == ADD_ASSIGN || t == SUB_ASSIGN || t == LEFT_ASSIGN || t == RIGHT_ASSIGN ||
         t == AND_ASSIGN || t == XOR_ASSIGN || t == OR_ASSIGN)
     {
-        node_expression(my_node, lexer_next_token(lexer));
+        node_operator(my_node, lexer_next_token(lexer));
         return true;
     }
     return false;
