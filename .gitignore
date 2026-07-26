@@ -3,3 +3,4 @@
 main
 /build
 run_tests
+.DS_Store
