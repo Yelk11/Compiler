@@ -2,3 +2,4 @@
 /.vscode
 main
 /build
+run_tests
