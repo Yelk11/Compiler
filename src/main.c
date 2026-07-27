@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        file_name = "example/test.c";
+        file_name = "example/longTest.c";
     }
 
     long lSize;

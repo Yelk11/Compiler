@@ -8,6 +8,8 @@ typedef struct lexer_T{
     char* src;      // source code
     char c;         // current charector
     unsigned int i; // iterator
+    int line;
+    int col;
 }lexer_T;
 
 lexer_T* init_lexer(char* src);

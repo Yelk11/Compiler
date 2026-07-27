@@ -6,6 +6,7 @@ typedef struct token_T
     char *value;
     enum
     {
+        // UNDEFINED,
         IDENTIFIER,
         AUTO,
         BREAK,

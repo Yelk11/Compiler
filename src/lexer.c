@@ -19,6 +19,8 @@ lexer_T *init_lexer(char *src)
     lexer->src = src;
     lexer->i = 0;
     lexer->c = lexer->src[lexer->i];
+    lexer->line = 1;
+    lexer->col = 1;
     return lexer;
 }
 
@@ -37,9 +39,15 @@ token_T *lexer_next_token(lexer_T *lexer)
     {
 
         if (isalpha(lexer->c))
+        {
+            free(value);
             return lexer_parse_id(lexer);
+        }
         if (isdigit(lexer->c))
+        {
+            free(value);
             return lexer_parse_number(lexer);
+        }
 
         switch (lexer->c)
         {
@@ -254,6 +262,7 @@ token_T *lexer_next_token(lexer_T *lexer)
                 return lexer_advance_current(lexer, QUESTION_MARK);
             }
         case '\'':
+            free(value);
             return lexer_parse_constant(lexer);
         case '\0': // EOF
             return init_token(value, END_OF_FILE);
@@ -301,8 +310,9 @@ int is_next_token(lexer_T *lexer, char *str)
     {
         temp_str = strcat(temp_str, (char[]){lexer_peek(lexer, i), '\0'});
     }
-
-    return (strcmp(temp_str, str) == 0);
+    int temp = strcmp(temp_str, str) == 0;
+    free(temp_str);
+    return temp;
 }
 
 char lexer_peek(lexer_T *lexer, int offset)
@@ -312,11 +322,17 @@ char lexer_peek(lexer_T *lexer, int offset)
 
 void lexer_advance(lexer_T *lexer)
 {
-
     if (lexer->c != '\0')
     {
         lexer->i += 1;
         lexer->c = lexer->src[lexer->i];
+        if(lexer->c == '\n')
+        {
+            lexer->col = 1;
+            lexer->line++;
+        }else{
+            lexer->col++;
+        }
     }
 }
 
