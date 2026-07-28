@@ -1784,8 +1784,7 @@ int is_direct_declarator(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
     {
-        lexer_next_token(lexer);
-        node_expression(my_node,IDENTIFIER);
+        node_expression(my_node,lexer_next_token(lexer));
         if(p_is_direct_declarator(lexer, my_node))
         {
             return true;
@@ -1973,8 +1972,7 @@ int p_is_identifier_list(lexer_T* lexer, node_T* my_node)
         lexer_next_token(lexer);
         if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
         {
-            lexer_next_token(lexer);
-            node_expression(my_node,IDENTIFIER);
+            node_expression(my_node, lexer_next_token(lexer));
             if(p_is_identifier_list(lexer, my_node))
             {
                 return true;
@@ -1989,8 +1987,8 @@ int is_identifier_list(lexer_T* lexer, node_T* my_node)
 {
     if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
     {
-        lexer_next_token(lexer);
-        node_expression(my_node,IDENTIFIER);
+
+        node_expression(my_node, lexer_next_token(lexer));
         if(p_is_identifier_list(lexer, my_node))
         {
             return true;
@@ -2326,8 +2324,7 @@ int is_labeled_statement(lexer_T* lexer, node_T* my_node)
         }
     }else if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
     {
-        lexer_next_token(lexer);
-        node_expression(my_node,IDENTIFIER);
+        node_expression(my_node, lexer_next_token(lexer));
         if(lexer_peek_next_token(lexer, 0)->type == COLON)
         {
             lexer_next_token(lexer);
@@ -2652,7 +2649,7 @@ int is_jump_statement(lexer_T* lexer, node_T* my_node)
     {
         if(lexer_peek_next_token(lexer, 0)->type == IDENTIFIER)
         {
-            // node_expression(my_node, token);
+            node_expression(my_node, lexer_next_token(lexer));
             if(lexer_peek_next_token(lexer, 0)->type == SEMICOLON)
             {
                 return true;
