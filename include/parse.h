@@ -1,9 +1,12 @@
 #ifndef PARSE_H
 #define PARSE_H
+
 #include <lexer.h>
 #include <token.h>
 #include <ast.h>
 #include <stdbool.h>
+#include "util.h"
+
 /*
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
