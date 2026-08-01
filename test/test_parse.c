@@ -37,6 +37,19 @@ void test_is_primary_expression_expression()
     TEST_ASSERT_TRUE(is_primary_expression(lexer, root));
 }
 
+void test_parse_static_global_declaration()
+{
+    lexer_T* lexer = init_lexer("static int x;");
+    node_T* root = NULL;
+    TEST_ASSERT_TRUE(parse(lexer, root));
+}
+
+void test_parse_static_struct_global_declaration()
+{
+    lexer_T* lexer = init_lexer("static struct tm now;");
+    node_T* root = NULL;
+    TEST_ASSERT_TRUE(parse(lexer, root));
+}
 
 int main(void) {
     UNITY_BEGIN();
@@ -44,5 +57,7 @@ int main(void) {
     // RUN_TEST(test_is_primary_expression_constant);
     RUN_TEST(test_is_primary_expression_str_literal);
     // RUN_TEST(test_is_primary_expression_expression);
+    RUN_TEST(test_parse_static_global_declaration);
+    RUN_TEST(test_parse_static_struct_global_declaration);
     return UNITY_END();
 }

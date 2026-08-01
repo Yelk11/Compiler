@@ -27,12 +27,13 @@
 
 int parse(lexer_T* lexer, node_T* my_node)
 {
-    if (is_function_definition(lexer, my_node))
+    if (is_translation_unit(lexer, my_node))
     {
         return true;
     }
     else
     {
+        error_print("Translation Unit", lexer);
         return false;
     }
 }
@@ -73,7 +74,8 @@ int is_primary_expression(lexer_T* lexer, node_T* my_node)
         token_T* token = lexer_next_token(lexer);
         node_expression(my_node, token);
         return true;
-    } 
+    }
+    error_print("Primary expression", lexer);
    return false;
 }
 
@@ -184,6 +186,7 @@ int p_is_postfix_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Post Fix expression", lexer);
     return false;
 }
 int is_postfix_expression(lexer_T* lexer, node_T* my_node)
@@ -195,6 +198,7 @@ int is_postfix_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Postfix Expression", lexer);
     return false;
 }
 
@@ -228,6 +232,7 @@ int p_is_argument_expression_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Argument Expression List", lexer);
     return false;
 }
 int is_argument_expression_list(lexer_T* lexer, node_T* my_node)
@@ -239,6 +244,7 @@ int is_argument_expression_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Argument Expression List", lexer);
     return false;
 }
 /*
@@ -273,7 +279,6 @@ int is_unary_expression(lexer_T* lexer, node_T* my_node)
         }
     }else if (is_unary_operator(lexer, my_node))
     {
-        lexer_next_token(lexer);
         if(is_cast_expression(lexer, my_node))
         {
             return true;
@@ -296,6 +301,7 @@ int is_unary_expression(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Unary Expression", lexer);
     return false;
 }
 
@@ -365,6 +371,7 @@ int is_cast_expression(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Cast Expression", lexer);
     return false;
 }
 
@@ -419,6 +426,7 @@ int p_is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Multiplicative Expression", lexer);
     return false;
 }
 int is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
@@ -430,6 +438,7 @@ int is_multiplicative_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Multiplicative Expression", lexer);
     return false;
 }
 
@@ -476,6 +485,7 @@ int p_is_additive_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Additive Expression", lexer);
     return false;
 }
 int is_additive_expression(lexer_T* lexer, node_T* my_node)
@@ -487,6 +497,7 @@ int is_additive_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Additive Expression", lexer);
     return false;
 }
 /*
@@ -529,6 +540,7 @@ int p_is_shift_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Shift Expression", lexer);
     return false;
 }
 int is_shift_expression(lexer_T* lexer, node_T* my_node)
@@ -540,6 +552,7 @@ int is_shift_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Shift Expression", lexer);
     return false;
 }
 
@@ -610,6 +623,7 @@ int p_is_relational_expression(lexer_T* lexer, node_T* my_node)
     }else {
         return true;
     }
+    error_print("Relational Expression", lexer);
     return false;
 }
 int is_relational_expression(lexer_T* lexer, node_T* my_node)
@@ -621,6 +635,7 @@ int is_relational_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Relational Expression", lexer);
     return false;
 }
 /*
@@ -665,6 +680,7 @@ int p_is_equality_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Equality Expression", lexer);
     return false;
 }
 int is_equality_expression(lexer_T* lexer, node_T* my_node)
@@ -676,6 +692,7 @@ int is_equality_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Equality Expression", lexer);
     return false;
 }
 /*
@@ -705,6 +722,7 @@ int p_is_and_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("And Expression", lexer);
     return false;
 }
 int is_and_expression(lexer_T* lexer, node_T* my_node)
@@ -716,6 +734,7 @@ int is_and_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("And Expression", lexer);
     return false;
 }
 /*
@@ -748,6 +767,7 @@ int p_is_exclusive_or_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Exclusive OR Expression", lexer);
     return false;
 }
 int is_exclusive_or_expression(lexer_T* lexer, node_T* my_node)
@@ -759,6 +779,7 @@ int is_exclusive_or_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Exclusive OR Expression", lexer);
     return false;
 }
 /*
@@ -791,6 +812,7 @@ int p_is_inclusive_or_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Inclusive OR Expression", lexer);
     return false;
 }
 int is_inclusive_or_expression(lexer_T* lexer, node_T* my_node)
@@ -802,6 +824,7 @@ int is_inclusive_or_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Inclusive OR Expression", lexer);
     return false;
 }
 /*
@@ -831,6 +854,7 @@ int p_is_logical_and_expression(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Logical AND Expression", lexer);
     return false;
 }
 int is_logical_and_expression(lexer_T* lexer, node_T* my_node)
@@ -842,6 +866,7 @@ int is_logical_and_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Logical AND Expression", lexer);
     return false;
 }
 /*
@@ -867,6 +892,7 @@ int p_is_logical_or_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Logical OR Expression", lexer);
     return false;
 }
 
@@ -879,6 +905,7 @@ int is_logical_or_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Logical OR Expression", lexer);
     return false;
 }
 /*
@@ -909,6 +936,7 @@ int is_conditional_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Conditional Expression", lexer);
     return false;
 }
 /*
@@ -934,6 +962,7 @@ int is_assignment_expression(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Assignment Expression", lexer);
     return false;
 }
 /*
@@ -1008,6 +1037,7 @@ int is_assignment_operator(lexer_T* lexer, node_T* my_node)
         lexer_next_token(lexer);
         return true;
     }
+    error_print("Assignment Operator", lexer);
     return false;
 }
 /*
@@ -1039,6 +1069,7 @@ int p_is_expression(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Expression", lexer);
     return false;
 }
 int is_expression(lexer_T* lexer, node_T* my_node)
@@ -1050,6 +1081,7 @@ int is_expression(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Expression", lexer);
     return false;
 }
 /*
@@ -1065,6 +1097,7 @@ int is_constant_expression(lexer_T* lexer, node_T* my_node)
     }
     else
     {
+        error_print("Constant Expression", lexer);
         return false;
     }
 }
@@ -1089,6 +1122,7 @@ int is_declaration(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Declaration", lexer);
     return false;
 }
 /*
@@ -1128,6 +1162,7 @@ int is_declaration_specifiers(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }else{
+        error_print("Declaration Specificier", lexer);
         return false;
     }
     return true;
@@ -1161,6 +1196,7 @@ int p_is_init_declarator_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Init Declarator List", lexer);
     return false;
 }
 int is_init_declarator_list(lexer_T* lexer, node_T* my_node)
@@ -1172,6 +1208,7 @@ int is_init_declarator_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Init Declarator List", lexer);
     return false;
 }
 /*
@@ -1196,6 +1233,7 @@ int is_init_declarator(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Init Declarator", lexer);
     return false;
 }
 /*
@@ -1234,6 +1272,7 @@ int is_storage_class_specifier(lexer_T* lexer, node_T* my_node)
         lexer_next_token(lexer);
         return true;
     }
+    error_print("Storage Class Specifier", lexer);
     return false;
 }
 /*
@@ -1300,6 +1339,17 @@ int is_type_specifier(lexer_T* lexer, node_T* my_node)
         lexer_next_token(lexer);
         return true;
     }
+    else if (token->type == IDENTIFIER)
+    {
+        token_T* next_token = lexer_peek_next_token(lexer, 1);
+        if (next_token->type == MULTIPLY ||
+            next_token->type == L_PARENTHESIS ||
+            next_token->type == L_BRACKET)
+        {
+            lexer_next_token(lexer);
+            return true;
+        }
+    }
     else if (is_enum_specifier(lexer, my_node))
     {
         return true;
@@ -1308,6 +1358,7 @@ int is_type_specifier(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Type Specifier", lexer);
     return false;
 }
 /*
@@ -1352,6 +1403,7 @@ int is_struct_or_union_specifier(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Struct or Union Specifier", lexer);
     return false;
 }
 /*
@@ -1364,12 +1416,15 @@ int is_struct_or_union(lexer_T* lexer, node_T* my_node)
 {
     if (lexer_peek_next_token(lexer, 0)->type == STRUCT)
     {
+        lexer_next_token(lexer);
         return true;
     }
     else if (lexer_peek_next_token(lexer, 0)->type == UNION)
     {
+        lexer_next_token(lexer);
         return true;
     }
+    error_print("Struct or Union", lexer);
     return false;
 }
 /*
@@ -1397,6 +1452,7 @@ int p_is_struct_declaration_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Struct Declaration List", lexer);
     return false;
 }
 int is_struct_declaration_list(lexer_T* lexer, node_T* my_node)
@@ -1408,6 +1464,7 @@ int is_struct_declaration_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Struct Declaration List", lexer);
     return false;
 }
 /*
@@ -1428,6 +1485,7 @@ int is_struct_declaration(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Struct Declaration", lexer);
     return false;
 }
 /*
@@ -1446,6 +1504,7 @@ int is_specifier_qualifier_list(lexer_T* lexer, node_T* my_node)
         {
             return true;
         }else{
+            error_print("Specifier Qualifier List", lexer);
             return false;
         }
     }else if (is_type_specifier(lexer, my_node))
@@ -1454,9 +1513,11 @@ int is_specifier_qualifier_list(lexer_T* lexer, node_T* my_node)
         {
             return true;
         }else{
+            error_print("Specifier Qualifier List", lexer);
             return false;
         }
     }
+    error_print("Specifier Qualifier List", lexer);
     return false;
 }
 /*
@@ -1486,6 +1547,7 @@ int p_is_struct_declarator_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Struct Declarator List", lexer);
     return false;
 }
 int is_struct_declarator_list(lexer_T* lexer, node_T* my_node)
@@ -1497,6 +1559,7 @@ int is_struct_declarator_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Struct Declarator List", lexer);
     return false;
 }
 /*
@@ -1528,6 +1591,7 @@ int is_struct_declarator(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Struct Declarator", lexer);
     return false;
 }
 /*
@@ -1576,6 +1640,7 @@ int is_enum_specifier(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Enum Specifier", lexer);
     return false;
 }
 /*
@@ -1607,6 +1672,7 @@ int p_is_enumerator_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Enumerator List", lexer);
     return false;
 }
 int is_enumerator_list(lexer_T* lexer, node_T* my_node)
@@ -1618,6 +1684,7 @@ int is_enumerator_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Enumerator List", lexer);
     return false;
 }
 /*
@@ -1643,6 +1710,7 @@ int is_enumerator(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Enumerator", lexer);
     return false;
 }
 /*
@@ -1661,6 +1729,7 @@ int is_type_qualifier(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Type Qualifier", lexer);
     return false;
 }
 /*
@@ -1678,6 +1747,7 @@ int is_declarator(lexer_T* lexer, node_T* my_node)
     }else if(is_direct_declarator(lexer, my_node)){
         return true;
     }
+    error_print("Declarator", lexer);
     return false;
 }
 /*
@@ -1764,6 +1834,7 @@ int p_is_direct_declarator(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Direct Declarator", lexer);
     return false;
 }
 int is_direct_declarator(lexer_T* lexer, node_T* my_node)
@@ -1790,6 +1861,7 @@ int is_direct_declarator(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Direct Declarator", lexer);
     return false;
 }
 
@@ -1821,6 +1893,7 @@ int is_pointer(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Pointer", lexer);
     return false;
 }
 /*
@@ -1848,6 +1921,7 @@ int p_is_type_qualifier_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Type Qualifier", lexer);
     return false;
 }
 int is_type_qualifier_list(lexer_T* lexer, node_T* my_node)
@@ -1859,6 +1933,7 @@ int is_type_qualifier_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Type Qualifier List", lexer);
     return false;
 }
 /*
@@ -1883,6 +1958,7 @@ int is_parameter_type_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Paramter type list", lexer);
     return false;
 }
 /*
@@ -1914,6 +1990,7 @@ int p_is_parameter_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Parameter List", lexer);
     return false;
 }
 int is_parameter_list(lexer_T* lexer, node_T* my_node)
@@ -1925,6 +2002,7 @@ int is_parameter_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Paramter List", lexer);
     return false;
 }
 /*
@@ -1949,6 +2027,7 @@ int is_parameter_declaration(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Parameter Declaration", lexer);
     return false;
 }
 /*
@@ -1981,6 +2060,7 @@ int p_is_identifier_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Identifier List", lexer);
     return false;
 }
 int is_identifier_list(lexer_T* lexer, node_T* my_node)
@@ -1994,6 +2074,7 @@ int is_identifier_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Identifier List", lexer);
     return false;
 }
 /*
@@ -2013,6 +2094,7 @@ int is_type_name(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Type Name", lexer);
     return false;
 }
 /*
@@ -2037,6 +2119,7 @@ int is_abstract_declarator(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Abstract Declarator", lexer);
     return false;
 }
 /*
@@ -2114,6 +2197,7 @@ int p_is_direct_abstract_declarator(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Direct Abstract Declarator", lexer);
     return false;
 }
 int is_direct_abstract_declarator(lexer_T* lexer, node_T* my_node)
@@ -2171,6 +2255,7 @@ int is_direct_abstract_declarator(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Direct Abstract Declarator", lexer);
     return false;
 }
 /*
@@ -2206,6 +2291,7 @@ int is_initializer(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Initializer", lexer);
     return false;
 }
 /*
@@ -2237,6 +2323,7 @@ int p_is_initializer_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Initializer List", lexer);
     return false;
 }
 int is_initializer_list(lexer_T* lexer, node_T* my_node)
@@ -2248,6 +2335,7 @@ int is_initializer_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Initializer List", lexer);
     return false;
 }
 /*
@@ -2286,6 +2374,7 @@ int is_statement(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
+    error_print("Statement", lexer);
     return false;
 }
 /*
@@ -2334,6 +2423,7 @@ int is_labeled_statement(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Labeled Statement", lexer);
     return false;
 }
 /*
@@ -2368,6 +2458,7 @@ int is_compound_statement(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Compound Statement", lexer);
     return false;
 }
 /*
@@ -2395,6 +2486,7 @@ int p_is_declaration_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Declatation List", lexer);
     return false;
 }
 int is_declaration_list(lexer_T* lexer, node_T* my_node)
@@ -2406,6 +2498,7 @@ int is_declaration_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Declatation List", lexer);
     return false;
 }
 /*
@@ -2433,6 +2526,7 @@ int p_is_statement_list(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Statement List", lexer);
     return false;
 }
 int is_statement_list(lexer_T* lexer, node_T* my_node)
@@ -2444,6 +2538,7 @@ int is_statement_list(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Statement List", lexer);
     return false;
 }
 /*
@@ -2466,6 +2561,7 @@ int is_expression_statement(lexer_T* lexer, node_T* my_node)
         lexer_next_token(lexer);
         return true;
     }
+    error_print("Expression Statement", lexer);
     return false;
 }
 /*
@@ -2520,6 +2616,7 @@ int is_selection_statement(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Selection Statement", lexer);
     return false;
 }
 /*
@@ -2607,6 +2704,7 @@ int is_iteration_statement(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Iteration Statement", lexer);
     return false;
 }
 /*
@@ -2656,6 +2754,7 @@ int is_jump_statement(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Jump Statement", lexer);
     return false;
 }
 /*
@@ -2683,6 +2782,7 @@ int p_is_translation_unit(lexer_T* lexer, node_T* my_node)
     }else{
         return true;
     }
+    error_print("Translation Unit", lexer);
     return false;
 }
 int is_translation_unit(lexer_T* lexer, node_T* my_node)
@@ -2694,6 +2794,7 @@ int is_translation_unit(lexer_T* lexer, node_T* my_node)
             return true;
         }
     }
+    error_print("Translation Unit", lexer);
     return false;
 }
 /*
@@ -2712,10 +2813,8 @@ int is_external_declaration(lexer_T* lexer, node_T* my_node)
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+    error_print("External Declaration", lexer);
+    return false;
 }
 /*
 function_definition
@@ -2751,5 +2850,6 @@ int is_function_definition(lexer_T* lexer, node_T* my_node)
             }
         }
     }
+    error_print("Function Definition", lexer);
     return false;
 }
